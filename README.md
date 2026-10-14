@@ -32,34 +32,6 @@
 6. ⑥ **毫秒级时间戳双重备份**：每次保存前，自动在本地 `backup/` 和客户端配置目录同步生成毫秒级时间戳备份快照，杜绝误操作风险。
 
 ---
-
-## 🧭 系统工程全景与核心流转
-
-```mermaid
-flowchart TD
-    subgraph UI["现代化 Web 控制台 (127.0.0.1:8899)"]
-        A["可视化节点大厅 (深/浅色模式)"] -->|选择订阅| B["读取已有 VIP 分组"]
-        B -->|点击分组胶囊| C["一键回显已选节点"]
-        C -->|国旗/特性快速过滤| D["增删勾选 VIP 节点"]
-        D -->|点击一键生成| E["POST /api/save"]
-    end
-
-    subgraph Backend["轻量 Python 服务 (server.py)"]
-        E --> F["解析本地 Roaming 配置文件"]
-        F --> G["毫秒级时间戳双重备份 (backup/)"]
-        G --> H["注入 VIP 自定义代理组"]
-        H --> I["总控挂载: 节点选择 (include-all)"]
-        I --> J["前置注入 65 条核心 AI 规则"]
-        J --> K["全局剔除流量/到期等假节点"]
-        K --> L["原子写入 Clash Verge Profiles"]
-    end
-
-    subgraph Client["Clash Verge 客户端"]
-        L --> M["右键卡片: 重新加载"]
-        M --> N["Mihomo 内核生效: 统一出口 + 纯净分流"]
-    end
-```
-
 ---
 
 ## 🖥️ 界面实测预览 (Screenshots)
