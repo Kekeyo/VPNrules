@@ -13,6 +13,30 @@
 
 ---
 
+## 🖥️ 界面实测预览 (Screenshots)
+
+### 🌙 暗夜深蓝极客模式 (Dark Mode)
+> 科技感深邃渐变背景、霓虹高亮发光卡片、实时节点计数与快捷筛选。
+
+![Dark Mode Overview](docs/images/01_dark_mode_overview.png)
+
+### ☀️ 苹果风极简明亮模式 (Light Mode)
+> 纯净立体卡片与柔和阴影，日间清爽护眼，支持一键秒切。
+
+![Light Mode Overview](docs/images/02_light_mode_overview.png)
+
+### 🇯🇵 地区国旗与协议标签秒级过滤
+> 点击国旗标签或输入协议关键词（如 IEPL、星链家宽、原生IP），秒级过滤优质节点。
+
+![Region Filter Japan](docs/images/03_region_filter_japan.png)
+
+### 🔄 已有 VIP 分组一键回显载入与增删
+> 自动识别当前订阅已有的自定义策略组，点击胶囊瞬间回显原先勾选，随时增删节点并无缝覆盖。
+
+![Group Recall & Edit](docs/images/04_group_recall_and_edit.png)
+
+---
+
 ## 🌟 核心特性与亮点
 
 - 🚀 **零依赖轻量架构**：基于纯原生 Python 3 内置库，无需执行 `pip install` 任何第三方包，双击即开；

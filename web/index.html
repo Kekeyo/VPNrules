@@ -631,7 +631,9 @@
 
     // 初始化深色/浅色主题
     function initTheme() {
-      const saved = localStorage.getItem('theme') || (window.matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark');
+      const urlParams = new URLSearchParams(window.location.search);
+      const urlTheme = urlParams.get('theme');
+      const saved = urlTheme || localStorage.getItem('theme') || (window.matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark');
       setTheme(saved);
     }
 
@@ -664,6 +666,8 @@
 
     async function loadProfiles() {
       try {
+        const urlParams = new URLSearchParams(window.location.search);
+        const targetSub = urlParams.get('sub');
         const res = await fetch('/api/profiles');
         const data = await res.json();
         const select = document.getElementById('subSelect');
@@ -672,10 +676,18 @@
           const opt = document.createElement('option');
           opt.value = item.uid;
           opt.textContent = `${item.name} ${item.is_current ? ' (当前正在使用)' : ''}`;
-          if (item.is_current) opt.selected = true;
+          if (targetSub ? (item.uid === targetSub || item.name.includes(targetSub)) : item.is_current) {
+            opt.selected = true;
+          }
           select.appendChild(opt);
         });
         await loadNodes();
+
+        const targetRegion = urlParams.get('region');
+        if (targetRegion) {
+          const pill = document.querySelector(`.pill[onclick*="'${targetRegion}'"]`);
+          if (pill) setRegionFilter(targetRegion, pill);
+        }
       } catch (err) {
         showToast('❌ 加载订阅列表失败，请检查服务是否运行', 'error');
       }
