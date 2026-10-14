@@ -1,0 +1,919 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Clash Verge VIP 节点编排控制台</title>
+  <style>
+    /* 深色主题变量 (默认) */
+    html[data-theme="dark"] {
+      --bg-base: #0b0f19;
+      --bg-gradient: radial-gradient(circle at top, #1e1b4b 0%, #0b0f19 100%);
+      --bg-surface: #111827;
+      --bg-header: rgba(17, 24, 39, 0.85);
+      --bg-sidebar: rgba(17, 24, 39, 0.75);
+      --bg-toolbar: rgba(17, 24, 39, 0.75);
+      --bg-card: rgba(30, 41, 59, 0.7);
+      --bg-card-hover: rgba(51, 65, 85, 0.85);
+      --bg-card-selected: rgba(14, 116, 144, 0.45);
+      --bg-input: rgba(15, 23, 42, 0.9);
+      --border: #334155;
+      --border-active: #06b6d4;
+      --primary: #06b6d4;
+      --primary-hover: #0891b2;
+      --accent: #8b5cf6;
+      --text: #f8fafc;
+      --text-muted: #94a3b8;
+      --node-name-color: #ffffff;
+      --header-shadow: 0 10px 30px rgba(0,0,0,0.4);
+      --card-shadow: 0 2px 8px rgba(0,0,0,0.2);
+      --switch-bg: rgba(15, 23, 42, 0.5);
+      --pill-bg: rgba(30, 41, 59, 0.8);
+      --pill-hover: rgba(51, 65, 85, 1);
+    }
+
+    /* 浅色主题变量 */
+    html[data-theme="light"] {
+      --bg-base: #f1f5f9;
+      --bg-gradient: radial-gradient(circle at top, #e2e8f0 0%, #f1f5f9 100%);
+      --bg-surface: #ffffff;
+      --bg-header: rgba(255, 255, 255, 0.9);
+      --bg-sidebar: rgba(255, 255, 255, 0.85);
+      --bg-toolbar: rgba(255, 255, 255, 0.85);
+      --bg-card: rgba(255, 255, 255, 0.95);
+      --bg-card-hover: rgba(241, 245, 249, 1);
+      --bg-card-selected: rgba(6, 182, 212, 0.15);
+      --bg-input: #ffffff;
+      --border: #cbd5e1;
+      --border-active: #0891b2;
+      --primary: #0891b2;
+      --primary-hover: #0e7490;
+      --accent: #7c3aed;
+      --text: #0f172a;
+      --text-muted: #64748b;
+      --node-name-color: #0f172a;
+      --header-shadow: 0 4px 20px rgba(0,0,0,0.06);
+      --card-shadow: 0 2px 8px rgba(0,0,0,0.04);
+      --switch-bg: rgba(241, 245, 249, 0.8);
+      --pill-bg: #e2e8f0;
+      --pill-hover: #cbd5e1;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "PingFang SC", "Microsoft YaHei", sans-serif;
+      background: var(--bg-gradient);
+      color: var(--text);
+      min-height: 100vh;
+      padding: 24px;
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+      transition: background 0.3s ease, color 0.3s ease;
+    }
+
+    /* 顶部导航 */
+    header {
+      background: var(--bg-header);
+      backdrop-filter: blur(16px);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 16px 24px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      box-shadow: var(--header-shadow);
+      transition: all 0.3s ease;
+    }
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .brand-icon {
+      font-size: 26px;
+      background: linear-gradient(135deg, var(--primary), var(--accent));
+      width: 44px;
+      height: 44px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 10px;
+      box-shadow: 0 0 15px rgba(6,182,212,0.4);
+    }
+    .brand-title {
+      font-size: 20px;
+      font-weight: 700;
+      letter-spacing: 0.5px;
+      color: var(--text);
+    }
+    .brand-subtitle {
+      font-size: 12px;
+      color: var(--text-muted);
+    }
+
+    .top-controls {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+    .sub-selector {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      background: var(--bg-input);
+      padding: 8px 14px;
+      border-radius: 8px;
+      border: 1px solid var(--border);
+      transition: all 0.3s;
+    }
+    .sub-selector label {
+      font-size: 13px;
+      color: var(--text-muted);
+      font-weight: 500;
+    }
+    select {
+      background: transparent;
+      color: var(--text);
+      border: none;
+      font-size: 14px;
+      font-weight: 600;
+      outline: none;
+      cursor: pointer;
+    }
+    select option {
+      background: var(--bg-surface);
+      color: var(--text);
+    }
+
+    /* 昼夜模式切换按钮 */
+    .theme-toggle {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      background: var(--bg-input);
+      border: 1px solid var(--border);
+      color: var(--text);
+      padding: 8px 14px;
+      border-radius: 8px;
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      user-select: none;
+    }
+    .theme-toggle:hover {
+      border-color: var(--primary);
+      transform: translateY(-1px);
+      box-shadow: 0 4px 12px rgba(6,182,212,0.2);
+    }
+    .theme-icon {
+      font-size: 16px;
+    }
+
+    /* 主体双栏 */
+    main {
+      display: grid;
+      grid-template-columns: 360px 1fr;
+      gap: 24px;
+      flex: 1;
+      align-items: start;
+    }
+
+    /* 左侧控制栏 */
+    .sidebar {
+      background: var(--bg-sidebar);
+      backdrop-filter: blur(12px);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 24px;
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+      position: sticky;
+      top: 24px;
+      box-shadow: var(--header-shadow);
+      transition: all 0.3s ease;
+    }
+    .sidebar h2 {
+      font-size: 16px;
+      font-weight: 700;
+      border-bottom: 1px solid var(--border);
+      padding-bottom: 12px;
+      color: var(--primary);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .form-group {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+    .form-group label {
+      font-size: 13px;
+      color: var(--text-muted);
+      font-weight: 500;
+    }
+    input[type="text"] {
+      background: var(--bg-input);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 10px 14px;
+      color: var(--text);
+      font-size: 14px;
+      outline: none;
+      transition: all 0.2s;
+    }
+    input[type="text"]:focus {
+      border-color: var(--primary);
+      box-shadow: 0 0 10px rgba(6,182,212,0.3);
+    }
+
+    .radio-group {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+    }
+    .radio-btn {
+      background: var(--bg-input);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 8px;
+      font-size: 13px;
+      text-align: center;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .radio-btn.active {
+      background: rgba(6, 182, 212, 0.15);
+      border-color: var(--primary);
+      color: var(--primary);
+      font-weight: 600;
+    }
+
+    .switches {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      background: var(--switch-bg);
+      padding: 14px;
+      border-radius: 8px;
+      border: 1px solid var(--border);
+      transition: all 0.3s;
+    }
+    .switch-item {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 13px;
+      cursor: pointer;
+      color: var(--text);
+    }
+    .switch-item input {
+      accent-color: var(--primary);
+      width: 16px;
+      height: 16px;
+      cursor: pointer;
+    }
+
+    .selected-summary {
+      background: rgba(6, 182, 212, 0.1);
+      border: 1px dashed var(--primary);
+      padding: 12px 16px;
+      border-radius: 8px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .selected-count {
+      font-size: 18px;
+      font-weight: 700;
+      color: var(--primary);
+    }
+
+    .action-btn-main {
+      background: linear-gradient(135deg, var(--primary), var(--accent));
+      color: #fff;
+      border: none;
+      border-radius: 8px;
+      padding: 14px;
+      font-size: 15px;
+      font-weight: 700;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      box-shadow: 0 4px 20px rgba(6,182,212,0.4);
+      transition: all 0.2s;
+    }
+    .action-btn-main:hover {
+      opacity: 0.95;
+      transform: translateY(-2px);
+      box-shadow: 0 6px 25px rgba(6,182,212,0.6);
+    }
+    .action-btn-main:active {
+      transform: translateY(0);
+    }
+
+    /* 右侧卡片区 */
+    .content-area {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .toolbar {
+      background: var(--bg-toolbar);
+      backdrop-filter: blur(12px);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 16px 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      box-shadow: var(--header-shadow);
+      transition: all 0.3s ease;
+    }
+    .search-row {
+      display: flex;
+      gap: 12px;
+      align-items: center;
+    }
+    .search-box {
+      flex: 1;
+      position: relative;
+    }
+    .search-box input {
+      width: 100%;
+      padding-left: 36px;
+    }
+    .search-icon {
+      position: absolute;
+      left: 12px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: var(--text-muted);
+    }
+
+    .filter-pills {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      align-items: center;
+    }
+    .pill {
+      background: var(--pill-bg);
+      border: 1px solid var(--border);
+      color: var(--text);
+      padding: 6px 14px;
+      border-radius: 20px;
+      font-size: 12px;
+      cursor: pointer;
+      transition: all 0.2s;
+      user-select: none;
+    }
+    .pill:hover {
+      background: var(--pill-hover);
+      border-color: var(--text-muted);
+    }
+    .pill.active {
+      background: var(--primary);
+      color: #fff;
+      font-weight: 700;
+      border-color: var(--primary);
+      box-shadow: 0 0 10px rgba(6,182,212,0.4);
+    }
+
+    .quick-actions {
+      display: flex;
+      gap: 8px;
+      margin-left: auto;
+    }
+    .btn-sm {
+      background: var(--pill-bg);
+      border: 1px solid var(--border);
+      color: var(--text);
+      padding: 6px 12px;
+      border-radius: 6px;
+      font-size: 12px;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .btn-sm:hover {
+      background: var(--pill-hover);
+      border-color: var(--text-muted);
+    }
+
+    /* 节点网格 */
+    .nodes-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 12px;
+    }
+    .node-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 14px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      cursor: pointer;
+      transition: all 0.15s ease;
+      user-select: none;
+      position: relative;
+      overflow: hidden;
+      box-shadow: var(--card-shadow);
+    }
+    .node-card:hover {
+      background: var(--bg-card-hover);
+      border-color: var(--text-muted);
+      transform: translateY(-2px);
+    }
+    .node-card.selected {
+      background: var(--bg-card-selected);
+      border-color: var(--border-active);
+      box-shadow: 0 0 15px rgba(6,182,212,0.25);
+    }
+    .node-card.is-info {
+      opacity: 0.6;
+      border-style: dashed;
+    }
+
+    .node-checkbox {
+      width: 18px;
+      height: 18px;
+      accent-color: var(--primary);
+      cursor: pointer;
+    }
+    .node-flag {
+      font-size: 24px;
+      line-height: 1;
+    }
+    .node-info {
+      flex: 1;
+      min-width: 0;
+    }
+    .node-name {
+      font-size: 13px;
+      font-weight: 600;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      color: var(--node-name-color);
+    }
+    .node-tags {
+      display: flex;
+      gap: 4px;
+      margin-top: 4px;
+      flex-wrap: wrap;
+    }
+    .badge {
+      font-size: 10px;
+      padding: 2px 6px;
+      border-radius: 4px;
+      background: rgba(148, 163, 184, 0.15);
+      color: var(--text-muted);
+    }
+    .badge.iepl { background: rgba(245, 158, 11, 0.2); color: #d97706; font-weight: 600; }
+    .badge.direct { background: rgba(16, 185, 129, 0.2); color: #059669; font-weight: 600; }
+    .badge.home { background: rgba(139, 92, 246, 0.2); color: #7c3aed; font-weight: 600; }
+
+    /* 弹窗提示 */
+    .toast {
+      position: fixed;
+      bottom: 30px;
+      right: 30px;
+      background: var(--bg-surface);
+      border: 1px solid var(--primary);
+      padding: 16px 24px;
+      border-radius: 10px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      z-index: 1000;
+      transform: translateY(100px);
+      opacity: 0;
+      transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .toast.show {
+      transform: translateY(0);
+      opacity: 1;
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <div class="brand">
+      <div class="brand-icon">🌐</div>
+      <div>
+        <div class="brand-title">Clash Verge VIP 节点编排控制台</div>
+        <div class="brand-subtitle">可视化自由勾选 · 自定义分组 · 一键无缝注入</div>
+      </div>
+    </div>
+    <div class="top-controls">
+      <div class="sub-selector">
+        <label for="subSelect">当前活动订阅：</label>
+        <select id="subSelect" onchange="loadNodes()"></select>
+      </div>
+
+      <!-- 深色/浅色模式切换按钮 -->
+      <button class="theme-toggle" id="themeToggle" onclick="toggleTheme()" title="点击切换深色/浅色模式">
+        <span class="theme-icon" id="themeIcon">🌙</span>
+        <span class="theme-text" id="themeText">深色模式</span>
+      </button>
+    </div>
+  </header>
+
+  <main>
+    <!-- 左侧控制栏 -->
+    <aside class="sidebar">
+      <h2>⚙️ VIP 分组编排配置</h2>
+
+      <!-- 已有分组快速回显栏 -->
+      <div class="form-group" id="existingGroupsContainer" style="display: none;">
+        <label>📂 已有 VIP 分组（点击直接载入修改）：</label>
+        <div class="existing-pills" id="existingGroupsList" style="display: flex; flex-wrap: wrap; gap: 6px;"></div>
+      </div>
+
+      <div class="form-group">
+        <label for="groupNameInput">自定义分组名称：</label>
+        <input type="text" id="groupNameInput" value="日本精选VIP" placeholder="例如：日本VIP专线、新加坡游戏池">
+      </div>
+
+      <div class="form-group">
+        <label>分组调度策略：</label>
+        <div class="radio-group">
+          <div class="radio-btn active" id="typeSelect" onclick="setGroupType('select')">手动选择 (select)</div>
+          <div class="radio-btn" id="typeUrlTest" onclick="setGroupType('url-test')">自动测速 (url-test)</div>
+        </div>
+      </div>
+
+      <div class="switches">
+        <label class="switch-item">
+          <input type="checkbox" id="mountSelector" checked>
+          <span>置顶挂载至『节点选择』总控台</span>
+        </label>
+        <label class="switch-item">
+          <input type="checkbox" id="cleanInfo" checked>
+          <span>自动过滤流量/套餐等非代理提示卡片</span>
+        </label>
+        <label class="switch-item">
+          <input type="checkbox" id="linkMedia" checked>
+          <span>将港台番剧与蒸汽平台接入总控</span>
+        </label>
+      </div>
+
+      <div class="selected-summary">
+        <span>当前已勾选节点：</span>
+        <span class="selected-count" id="selectedCountDisplay">0</span>
+      </div>
+
+      <button class="action-btn-main" onclick="saveAndApply()">
+        <span>🚀 一键生成并写入 Clash Verge</span>
+      </button>
+
+      <div style="font-size: 11px; color: var(--text-muted); line-height: 1.5; background: var(--switch-bg); padding: 10px; border-radius: 6px; border: 1px solid var(--border);">
+        💡 提示：点击生成后，后台会自动更新覆写配置并在工作区自动备份。完成后在 Verge 订阅卡片上右键『重新加载』即生效！
+      </div>
+    </aside>
+
+    <!-- 右侧节点展示大厅 -->
+    <section class="content-area">
+      <div class="toolbar">
+        <div class="search-row">
+          <div class="search-box">
+            <span class="search-icon">🔍</span>
+            <input type="text" id="searchInput" placeholder="实时搜索节点名称（如 IEPL、原生、直连、02...）" oninput="renderNodes()">
+          </div>
+          <div class="quick-actions">
+            <button class="btn-sm" onclick="selectFiltered(true)">⚡ 全选当前筛选</button>
+            <button class="btn-sm" onclick="selectFiltered(false)">清空当前筛选</button>
+            <button class="btn-sm" onclick="clearAllSelections()">🗑️ 全部清空</button>
+          </div>
+        </div>
+
+        <div class="filter-pills">
+          <span style="font-size: 12px; color: var(--text-muted);">地区筛选：</span>
+          <div class="pill active" onclick="setRegionFilter('ALL', this)">全部地区</div>
+          <div class="pill" onclick="setRegionFilter('JP', this)">🇯🇵 日本</div>
+          <div class="pill" onclick="setRegionFilter('SG', this)">🇸🇬 新加坡</div>
+          <div class="pill" onclick="setRegionFilter('US', this)">🇺🇸 美国</div>
+          <div class="pill" onclick="setRegionFilter('HK', this)">🇭🇰 香港</div>
+          <div class="pill" onclick="setRegionFilter('TW', this)">🇹🇼 台湾</div>
+          <div class="pill" onclick="setRegionFilter('KR', this)">🇰🇷 韩国</div>
+        </div>
+      </div>
+
+      <!-- 节点卡片容器 -->
+      <div class="nodes-grid" id="nodesContainer">
+        <!-- 动态渲染 -->
+      </div>
+    </section>
+  </main>
+
+  <!-- 浮动通知 -->
+  <div class="toast" id="toast">
+    <span id="toastIcon" style="font-size: 20px;">✅</span>
+    <span id="toastMsg" style="font-size: 14px;">操作成功</span>
+  </div>
+
+  <script>
+    let allNodes = [];
+    let selectedSet = new Set();
+    let currentRegion = 'ALL';
+    let currentGroupType = 'select';
+
+    // 初始化深色/浅色主题
+    function initTheme() {
+      const saved = localStorage.getItem('theme') || (window.matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark');
+      setTheme(saved);
+    }
+
+    function setTheme(theme) {
+      document.documentElement.setAttribute('data-theme', theme);
+      localStorage.setItem('theme', theme);
+      const icon = document.getElementById('themeIcon');
+      const text = document.getElementById('themeText');
+      if (icon && text) {
+        if (theme === 'light') {
+          icon.textContent = '☀️';
+          text.textContent = '浅色模式';
+        } else {
+          icon.textContent = '🌙';
+          text.textContent = '深色模式';
+        }
+      }
+    }
+
+    function toggleTheme() {
+      const current = document.documentElement.getAttribute('data-theme') || 'dark';
+      setTheme(current === 'dark' ? 'light' : 'dark');
+    }
+
+    // 初始化加载
+    window.addEventListener('DOMContentLoaded', async () => {
+      initTheme();
+      await loadProfiles();
+    });
+
+    async function loadProfiles() {
+      try {
+        const res = await fetch('/api/profiles');
+        const data = await res.json();
+        const select = document.getElementById('subSelect');
+        select.innerHTML = '';
+        data.items.forEach(item => {
+          const opt = document.createElement('option');
+          opt.value = item.uid;
+          opt.textContent = `${item.name} ${item.is_current ? ' (当前正在使用)' : ''}`;
+          if (item.is_current) opt.selected = true;
+          select.appendChild(opt);
+        });
+        await loadNodes();
+      } catch (err) {
+        showToast('❌ 加载订阅列表失败，请检查服务是否运行', 'error');
+      }
+    }
+
+    async function loadNodes() {
+      const uid = document.getElementById('subSelect').value;
+      if (!uid) return;
+      try {
+        const res = await fetch(`/api/nodes?uid=${uid}`);
+        const data = await res.json();
+        allNodes = data.nodes || [];
+        selectedSet.clear();
+
+        // 渲染并绑定已有 VIP 分组
+        const existingContainer = document.getElementById('existingGroupsContainer');
+        const existingList = document.getElementById('existingGroupsList');
+        existingList.innerHTML = '';
+        const customGroups = (data.override && data.override.custom_groups) || [];
+
+        if (customGroups.length > 0) {
+          existingContainer.style.display = 'block';
+          customGroups.forEach(cg => {
+            const btn = document.createElement('div');
+            btn.className = 'pill';
+            btn.style.fontSize = '12px';
+            btn.style.padding = '4px 10px';
+            btn.innerHTML = `📁 <b>${escapeHtml(cg.name)}</b> <span style="opacity:0.7">(${cg.count}个)</span>`;
+            btn.onclick = () => loadExistingGroup(cg);
+            existingList.appendChild(btn);
+          });
+
+          // 增加新建按钮
+          const newBtn = document.createElement('div');
+          newBtn.className = 'pill';
+          newBtn.style.fontSize = '12px';
+          newBtn.style.padding = '4px 10px';
+          newBtn.style.borderStyle = 'dashed';
+          newBtn.innerHTML = `➕ 新建全新分组`;
+          newBtn.onclick = () => resetNewGroup();
+          existingList.appendChild(newBtn);
+
+          // 默认直接回显第一个已有分组！
+          loadExistingGroup(customGroups[0], false);
+        } else {
+          existingContainer.style.display = 'none';
+          resetNewGroup(false);
+        }
+
+        updateCountDisplay();
+        renderNodes();
+      } catch (err) {
+        showToast('❌ 读取节点列表失败', 'error');
+      }
+    }
+
+    function loadExistingGroup(cg, showNotification = true) {
+      document.getElementById('groupNameInput').value = cg.name;
+      setGroupType(cg.type || 'select');
+      selectedSet.clear();
+      if (Array.isArray(cg.proxies)) {
+        cg.proxies.forEach(p => selectedSet.add(p));
+      }
+      updateCountDisplay();
+      renderNodes();
+      if (showNotification) {
+        showToast(`📂 已载入已有分组【${cg.name}】（共 ${cg.count} 个节点），可直接在右侧卡片勾选增删调整！`, 'success');
+      }
+    }
+
+    function resetNewGroup(showNotification = true) {
+      document.getElementById('groupNameInput').value = '新建VIP专线';
+      setGroupType('select');
+      selectedSet.clear();
+      updateCountDisplay();
+      renderNodes();
+      if (showNotification) {
+        showToast('✨ 已重置为新建模式，请在右侧勾选节点并自定义起名', 'success');
+      }
+    }
+
+    function setGroupType(t) {
+      currentGroupType = t;
+      document.getElementById('typeSelect').classList.toggle('active', t === 'select');
+      document.getElementById('typeUrlTest').classList.toggle('active', t === 'url-test');
+    }
+
+    function setRegionFilter(reg, el) {
+      currentRegion = reg;
+      document.querySelectorAll('.filter-pills .pill').forEach(p => p.classList.remove('active'));
+      el.classList.add('active');
+      renderNodes();
+    }
+
+    function getFilteredNodes() {
+      const q = document.getElementById('searchInput').value.trim().toUpperCase();
+      return allNodes.filter(n => {
+        // 地区筛选
+        if (currentRegion !== 'ALL' && n.region.code !== currentRegion) {
+          return false;
+        }
+        // 关键词搜索
+        if (q && !n.name.toUpperCase().includes(q)) {
+          return false;
+        }
+        return true;
+      });
+    }
+
+    function renderNodes() {
+      const container = document.getElementById('nodesContainer');
+      const filtered = getFilteredNodes();
+      container.innerHTML = '';
+
+      if (filtered.length === 0) {
+        container.innerHTML = `<div style="grid-column: 1/-1; text-align: center; padding: 60px; color: var(--text-muted);">
+          未找到匹配条件的节点
+        </div>`;
+        return;
+      }
+
+      filtered.forEach(node => {
+        const isSelected = selectedSet.has(node.name);
+        const card = document.createElement('div');
+        card.className = `node-card ${isSelected ? 'selected' : ''} ${node.is_info ? 'is-info' : ''}`;
+        card.onclick = (e) => {
+          if (e.target.tagName !== 'INPUT') {
+            toggleNode(node.name);
+          }
+        };
+
+        const badgeHtml = node.tags.map(t => {
+          let c = '';
+          if (t.includes('IEPL')) c = 'iepl';
+          if (t.includes('直连')) c = 'direct';
+          if (t.includes('家宽')) c = 'home';
+          return `<span class="badge ${c}">${t}</span>`;
+        }).join('');
+
+        card.innerHTML = `
+          <input type="checkbox" class="node-checkbox" ${isSelected ? 'checked' : ''} onchange="toggleNode('${escapeHtml(node.name)}')">
+          <div class="node-flag">${node.region.flag}</div>
+          <div class="node-info">
+            <div class="node-name" title="${escapeHtml(node.name)}">${escapeHtml(node.name)}</div>
+            <div class="node-tags">
+              ${node.is_info ? '<span class="badge" style="color:#ef4444;">提示信息</span>' : ''}
+              ${badgeHtml}
+            </div>
+          </div>
+        `;
+        container.appendChild(card);
+      });
+    }
+
+    function toggleNode(name) {
+      if (selectedSet.has(name)) {
+        selectedSet.delete(name);
+      } else {
+        selectedSet.add(name);
+      }
+      updateCountDisplay();
+      renderNodes();
+    }
+
+    function selectFiltered(select) {
+      const filtered = getFilteredNodes();
+      filtered.forEach(n => {
+        if (!n.is_info) {
+          if (select) selectedSet.add(n.name);
+          else selectedSet.delete(n.name);
+        }
+      });
+      updateCountDisplay();
+      renderNodes();
+    }
+
+    function clearAllSelections() {
+      selectedSet.clear();
+      updateCountDisplay();
+      renderNodes();
+    }
+
+    function updateCountDisplay() {
+      document.getElementById('selectedCountDisplay').textContent = selectedSet.size;
+    }
+
+    async function saveAndApply() {
+      const groupName = document.getElementById('groupNameInput').value.trim();
+      if (!groupName) {
+        showToast('⚠️ 请输入分组名称', 'warning');
+        return;
+      }
+      if (selectedSet.size === 0) {
+        showToast('⚠️ 请至少勾选一个节点', 'warning');
+        return;
+      }
+
+      const uid = document.getElementById('subSelect').value;
+      const payload = {
+        uid: uid,
+        group_name: groupName,
+        group_type: currentGroupType,
+        selected_nodes: Array.from(selectedSet),
+        mount_to_selector: document.getElementById('mountSelector').checked,
+        clean_info_cards: document.getElementById('cleanInfo').checked,
+        link_media_groups: document.getElementById('linkMedia').checked
+      };
+
+      try {
+        const res = await fetch('/api/save-group', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload)
+        });
+        const data = await res.json();
+        if (data.success) {
+          showToast(`🎉 ${data.message}！请在 Verge 客户端右键『重新加载』生效`, 'success');
+        } else {
+          showToast(`❌ 保存失败: ${data.error}`, 'error');
+        }
+      } catch (err) {
+        showToast('❌ 网络错误，保存失败', 'error');
+      }
+    }
+
+    function showToast(msg, type='success') {
+      const t = document.getElementById('toast');
+      const icon = document.getElementById('toastIcon');
+      const text = document.getElementById('toastMsg');
+      text.textContent = msg;
+      icon.textContent = type === 'success' ? '✅' : (type === 'warning' ? '⚠️' : '❌');
+      t.classList.add('show');
+      setTimeout(() => t.classList.remove('show'), 5000);
+    }
+
+    function escapeHtml(str) {
+      return str.replace(/'/g, "\\'").replace(/"/g, '&quot;');
+    }
+  </script>
+</body>
+</html>
