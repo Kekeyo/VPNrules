@@ -75,40 +75,46 @@
       background: var(--bg-gradient);
       color: var(--text);
       min-height: 100vh;
-      padding: 13px 20px;
+      padding: 18px 26px;
       display: flex;
       flex-direction: column;
-      gap: 10px;
+      gap: 14px;
       transition: background 0.3s ease, color 0.3s ease;
     }
 
-    /* 顶部导航：精致紧凑型 */
+    /* 顶部导航：左右独立卡片浮动分离，彻底消除死板长框 */
     header {
-      background: var(--bg-header);
-      backdrop-filter: blur(16px);
-      border: 1px solid var(--border);
-      border-radius: 10px;
-      padding: 8px 16px;
+      background: transparent;
+      border: none;
+      box-shadow: none;
+      padding: 0;
       display: flex;
       justify-content: space-between;
       align-items: center;
-      box-shadow: var(--header-shadow);
+      gap: 16px;
       transition: all 0.3s ease;
     }
     .brand {
       display: flex;
       align-items: center;
-      gap: 10px;
+      gap: 12px;
+      background: var(--bg-header);
+      backdrop-filter: blur(16px);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 9px 18px;
+      box-shadow: var(--header-shadow);
+      transition: all 0.3s ease;
     }
     .brand-icon {
       font-size: 20px;
       background: linear-gradient(135deg, var(--primary), var(--accent));
-      width: 32px;
-      height: 32px;
+      width: 34px;
+      height: 34px;
       display: flex;
       align-items: center;
       justify-content: center;
-      border-radius: 7px;
+      border-radius: 8px;
       box-shadow: 0 0 12px rgba(6,182,212,0.35);
     }
     .brand-title {
@@ -116,18 +122,25 @@
       font-weight: 700;
       letter-spacing: 0.3px;
       color: var(--text);
-      line-height: 1.2;
+      line-height: 1.25;
     }
     .brand-subtitle {
-      font-size: 11px;
+      font-size: 11.5px;
       color: var(--text-muted);
-      line-height: 1.2;
+      line-height: 1.25;
     }
 
     .top-controls {
       display: flex;
       align-items: center;
-      gap: 8px;
+      gap: 10px;
+      background: var(--bg-header);
+      backdrop-filter: blur(16px);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 8px 16px;
+      box-shadow: var(--header-shadow);
+      transition: all 0.3s ease;
     }
     .sub-selector {
       display: flex;
@@ -489,30 +502,30 @@
       box-shadow: 0 6px 25px rgba(16, 185, 129, 0.6);
     }
 
-    /* 右侧卡片区：舒适呼吸感 */
+    /* 右侧卡片区：舒缓舒适的大气呼吸感 */
     .content-area {
       display: flex;
       flex-direction: column;
-      gap: 10px;
+      gap: 14px;
     }
 
     .toolbar {
       position: relative;
       z-index: 100;
       background: var(--bg-toolbar);
-      backdrop-filter: blur(12px);
+      backdrop-filter: blur(14px);
       border: 1px solid var(--border);
-      border-radius: 10px;
-      padding: 10px 16px;
+      border-radius: 12px;
+      padding: 12px 18px;
       display: flex;
       flex-direction: column;
-      gap: 9px;
+      gap: 12px;
       box-shadow: var(--header-shadow);
       transition: all 0.3s ease;
     }
     .search-row {
       display: flex;
-      gap: 10px;
+      gap: 12px;
       align-items: center;
     }
     .search-box {
@@ -521,39 +534,39 @@
     }
     .search-box input {
       width: 100%;
-      padding: 7px 12px 7px 34px;
-      font-size: 13px;
-      border-radius: 7px;
+      padding: 8px 14px 8px 36px;
+      font-size: 13.5px;
+      border-radius: 8px;
     }
     .search-icon {
       position: absolute;
-      left: 11px;
+      left: 12px;
       top: 50%;
       transform: translateY(-50%);
       color: var(--text-muted);
-      font-size: 13px;
+      font-size: 13.5px;
     }
 
     .filter-pills {
       display: flex;
       flex-wrap: wrap;
-      gap: 6px;
+      gap: 7px;
       align-items: center;
     }
     .pill {
       background: var(--pill-bg);
       border: 1px solid var(--border);
       color: var(--text);
-      padding: 4px 12px;
-      border-radius: 16px;
-      font-size: 12px;
+      padding: 5px 14px;
+      border-radius: 18px;
+      font-size: 12.5px;
       font-weight: 600;
       cursor: pointer;
       transition: all 0.18s ease;
       user-select: none;
       display: inline-flex;
       align-items: center;
-      gap: 4px;
+      gap: 5px;
     }
     .pill:hover {
       transform: translateY(-1px);
@@ -932,28 +945,23 @@
       background: var(--pill-hover);
     }
 
-    /* 节点网格：紧凑 5 列布局 (更小更密，充分利用视口) */
+    /* 节点网格：舒缓大气的 4 列黄金呼吸感布局 (拒绝拥挤，开阔通透) */
     .nodes-grid {
       display: grid;
-      grid-template-columns: repeat(5, minmax(0, 1fr));
-      gap: 10px;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 14px;
     }
-    @media (max-width: 1380px) {
-      .nodes-grid {
-        grid-template-columns: repeat(4, minmax(0, 1fr));
-      }
-    }
-    @media (max-width: 1080px) {
+    @media (max-width: 1200px) {
       .nodes-grid {
         grid-template-columns: repeat(3, minmax(0, 1fr));
       }
     }
-    @media (max-width: 768px) {
+    @media (max-width: 860px) {
       .nodes-grid {
         grid-template-columns: repeat(2, minmax(0, 1fr));
       }
     }
-    @media (max-width: 480px) {
+    @media (max-width: 540px) {
       .nodes-grid {
         grid-template-columns: 1fr;
       }
@@ -963,33 +971,33 @@
       background: var(--bg-card);
       border: 1px solid var(--border-card);
       border-left: 3.5px solid transparent;
-      border-radius: 10px;
-      padding: 11px 13px;
+      border-radius: 12px;
+      padding: 12px 16px;
       display: flex;
       align-items: center;
-      gap: 10px;
+      gap: 12px;
       cursor: pointer;
-      transition: all 0.16s ease;
+      transition: all 0.18s ease;
       user-select: none;
       position: relative;
       overflow: hidden;
       box-shadow: var(--card-shadow);
-      min-height: 58px;
+      min-height: 62px;
     }
     .node-card:hover {
       background: var(--bg-card-hover);
       border-color: var(--border-card-hover);
-      transform: translateY(-1.5px);
-      box-shadow: 0 4px 12px rgba(6, 182, 212, 0.12);
+      transform: translateY(-2px);
+      box-shadow: 0 6px 16px rgba(6, 182, 212, 0.14);
     }
     .node-card.selected {
       background: var(--bg-card-selected);
       border-color: var(--border-card-selected);
       border-left-color: var(--border-card-selected);
-      box-shadow: 0 0 0 1px var(--border-card-selected), 0 3px 12px rgba(6, 182, 212, 0.22);
+      box-shadow: 0 0 0 1px var(--border-card-selected), 0 4px 16px rgba(6, 182, 212, 0.22);
     }
     html[data-theme="dark"] .node-card.selected {
-      box-shadow: 0 0 14px rgba(6, 182, 212, 0.32), inset 0 0 10px rgba(6, 182, 212, 0.08);
+      box-shadow: 0 0 16px rgba(6, 182, 212, 0.32), inset 0 0 10px rgba(6, 182, 212, 0.08);
     }
 
     .node-card.is-info {
@@ -1010,8 +1018,8 @@
     }
 
     .node-checkbox {
-      width: 16px;
-      height: 16px;
+      width: 17px;
+      height: 17px;
       accent-color: var(--primary);
       cursor: pointer;
       flex-shrink: 0;
@@ -1019,13 +1027,13 @@
 
     /* 地区国旗与微图标胶囊 */
     .node-avatar {
-      width: 28px;
-      height: 28px;
-      border-radius: 7px;
+      width: 30px;
+      height: 30px;
+      border-radius: 8px;
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 11px;
+      font-size: 11.5px;
       font-weight: 800;
       letter-spacing: -0.2px;
       flex-shrink: 0;
@@ -1055,14 +1063,15 @@
       min-width: 0;
     }
     .node-name {
-      font-size: 12.5px;
+      font-size: 13px;
       font-weight: 600;
       white-space: nowrap;
       overflow: hidden;
       text-overflow: ellipsis;
       color: var(--node-name-color);
       letter-spacing: 0.1px;
-      line-height: 1.35;
+      line-height: 1.4;
+      margin-bottom: 5px;
     }
     .node-card.selected .node-name {
       color: var(--primary);
