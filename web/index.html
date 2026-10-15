@@ -1156,7 +1156,7 @@
           <option value="REJECT">⛔ REJECT (拦截阻断)</option>
         </select>
         <button class="btn-add-rule" onclick="addNewRule()">➕ 添加</button>
-        <button class="btn-preset-rule" onclick="loadDefaultAIRules()" title="一键补全全套 65 条前置 AI 黄金规则">🤖 补齐 AI 规则</button>
+        <button class="btn-preset-rule" onclick="loadDefaultAIRules()" title="一键补齐国内外 AI 黄金分流规则（海外走VIP节点，国内走DIRECT直连）">🤖 补齐 AI 规则</button>
       </div>
 
       <!-- 搜索与筛选工具栏 -->
@@ -1243,6 +1243,13 @@
       if (urlParams.get('test_rules')) {
         setTimeout(() => {
           openRulesModal();
+          if (urlParams.get('test_filter')) {
+            setTimeout(() => {
+              const filter = urlParams.get('test_filter');
+              const pill = filter === 'DIRECT' ? document.getElementById('rulePillDirect') : document.getElementById('rulePillSelector');
+              if (pill) setRuleTargetFilter(filter, pill);
+            }, 250);
+          }
         }, 400);
       }
     });
@@ -1663,35 +1670,78 @@
       showToast(`🗑️ 已移除规则：${item ? item.payload : ''}`, 'info');
     }
 
-    // 一键补全 65 条前置 AI 黄金规则
+    // 一键补齐国内外 AI 核心分流黄金规则（智能区分：海外走节点选择，国内走 DIRECT 直连）
     function loadDefaultAIRules() {
-      const aiDomains = [
-        'claude.ai', 'claude.com', 'anthropic.com', 'openai.com', 'chatgpt.com',
-        'oaistatic.com', 'oaiusercontent.com', 'sora.com', 'perplexity.ai', 'pplx.ai',
-        'grok.com', 'x.ai', 'deepseek.com', 'gemini.google.com', 'generativelanguage.googleapis.com',
-        'aistudio.google.com', 'ai.google.dev', 'bard.google.com', 'antigravity.google',
-        'antigravity-unleash.goog', 'mistral.ai', 'cohere.com', 'openrouter.ai',
-        'huggingface.co', 'hf.co', 'groq.com', 'together.ai', 'copilot.microsoft.com',
-        'githubcopilot.com', 'cursor.com', 'cursor.sh', 'windsurf.com', 'codeium.com',
-        'kimi.com', 'moonshot.cn', 'qwen.ai', 'zhipuai.cn', 'minimax.chat'
+      const defaultRules = [
+        // 海外核心 AI（节点选择）
+        { type: 'DOMAIN-SUFFIX', payload: 'google.com', target: '节点选择' },
+        { type: 'DOMAIN-SUFFIX', payload: 'googleapis.com', target: '节点选择' },
+        { type: 'DOMAIN-SUFFIX', payload: 'google.dev', target: '节点选择' },
+        { type: 'DOMAIN-SUFFIX', payload: 'googleusercontent.com', target: '节点选择' },
+        { type: 'DOMAIN-SUFFIX', payload: 'gstatic.com', target: '节点选择' },
+        { type: 'DOMAIN-SUFFIX', payload: 'antigravity.google', target: '节点选择' },
+        { type: 'DOMAIN-SUFFIX', payload: 'antigravity-unleash.goog', target: '节点选择' },
+        { type: 'DOMAIN-SUFFIX', payload: 'anthropic.com', target: '节点选择' },
+        { type: 'DOMAIN-SUFFIX', payload: 'anthropicusercontent.com', target: '节点选择' },
+        { type: 'DOMAIN-SUFFIX', payload: 'claude.ai', target: '节点选择' },
+        { type: 'DOMAIN-SUFFIX', payload: 'claude.com', target: '节点选择' },
+        { type: 'DOMAIN-SUFFIX', payload: 'claudeusercontent.com', target: '节点选择' },
+        { type: 'DOMAIN-SUFFIX', payload: 'openai.com', target: '节点选择' },
+        { type: 'DOMAIN-SUFFIX', payload: 'chatgpt.com', target: '节点选择' },
+        { type: 'DOMAIN-SUFFIX', payload: 'oaistatic.com', target: '节点选择' },
+        { type: 'DOMAIN-SUFFIX', payload: 'oaiusercontent.com', target: '节点选择' },
+        { type: 'DOMAIN-SUFFIX', payload: 'sora.com', target: '节点选择' },
+        { type: 'DOMAIN-SUFFIX', payload: 'perplexity.ai', target: '节点选择' },
+        { type: 'DOMAIN-SUFFIX', payload: 'pplx.ai', target: '节点选择' },
+        { type: 'DOMAIN-SUFFIX', payload: 'grok.com', target: '节点选择' },
+        { type: 'DOMAIN-SUFFIX', payload: 'x.ai', target: '节点选择' },
+        { type: 'DOMAIN-SUFFIX', payload: 'mistral.ai', target: '节点选择' },
+        { type: 'DOMAIN-SUFFIX', payload: 'cohere.com', target: '节点选择' },
+        { type: 'DOMAIN-SUFFIX', payload: 'openrouter.ai', target: '节点选择' },
+        { type: 'DOMAIN-SUFFIX', payload: 'groq.com', target: '节点选择' },
+        { type: 'DOMAIN-SUFFIX', payload: 'together.ai', target: '节点选择' },
+        { type: 'DOMAIN-SUFFIX', payload: 'huggingface.co', target: '节点选择' },
+        { type: 'DOMAIN-SUFFIX', payload: 'hf.co', target: '节点选择' },
+        { type: 'DOMAIN-SUFFIX', payload: 'muse.ai', target: '节点选择' },
+        { type: 'DOMAIN-SUFFIX', payload: 'copilot.microsoft.com', target: '节点选择' },
+        { type: 'DOMAIN', payload: 'sydney.bing.com', target: '节点选择' },
+        { type: 'DOMAIN-SUFFIX', payload: 'githubcopilot.com', target: '节点选择' },
+        { type: 'DOMAIN-SUFFIX', payload: 'cursor.com', target: '节点选择' },
+        { type: 'DOMAIN-SUFFIX', payload: 'cursor.sh', target: '节点选择' },
+        { type: 'DOMAIN-SUFFIX', payload: 'windsurf.com', target: '节点选择' },
+        { type: 'DOMAIN-SUFFIX', payload: 'codeium.com', target: '节点选择' },
+
+        // 国内顶尖自研 AI 生态（国内直连 DIRECT，零延迟不绕路）
+        { type: 'DOMAIN-SUFFIX', payload: 'deepseek.com', target: 'DIRECT' },
+        { type: 'DOMAIN-SUFFIX', payload: 'kimi.com', target: 'DIRECT' },
+        { type: 'DOMAIN-SUFFIX', payload: 'moonshot.cn', target: 'DIRECT' },
+        { type: 'DOMAIN-SUFFIX', payload: 'qwen.ai', target: 'DIRECT' },
+        { type: 'DOMAIN', payload: 'dashscope.aliyuncs.com', target: 'DIRECT' },
+        { type: 'DOMAIN-SUFFIX', payload: 'bigmodel.cn', target: 'DIRECT' },
+        { type: 'DOMAIN-SUFFIX', payload: 'zhipuai.cn', target: 'DIRECT' },
+        { type: 'DOMAIN-SUFFIX', payload: 'doubao.com', target: 'DIRECT' },
+        { type: 'DOMAIN-SUFFIX', payload: 'minimax.io', target: 'DIRECT' },
+        { type: 'DOMAIN-SUFFIX', payload: 'minimaxi.com', target: 'DIRECT' },
+        { type: 'DOMAIN-SUFFIX', payload: 'stepfun.com', target: 'DIRECT' },
+        { type: 'DOMAIN-SUFFIX', payload: 'baichuan-ai.com', target: 'DIRECT' }
       ];
 
       let addedCount = 0;
-      aiDomains.forEach(dom => {
-        const exists = currentRules.some(r => r.payload && r.payload.toLowerCase() === dom.toLowerCase());
+      defaultRules.forEach(rule => {
+        const exists = currentRules.some(r => r.payload && r.payload.toLowerCase() === rule.payload.toLowerCase());
         if (!exists) {
           currentRules.unshift({
-            raw: `DOMAIN-SUFFIX,${dom},节点选择`,
-            type: 'DOMAIN-SUFFIX',
-            payload: dom,
-            target: '节点选择'
+            raw: `${rule.type},${rule.payload},${rule.target}`,
+            type: rule.type,
+            payload: rule.payload,
+            target: rule.target
           });
           addedCount++;
         }
       });
 
       renderRulesList();
-      showToast(`🤖 成功补全 ${addedCount} 条 AI 核心分流规则！`, 'success');
+      showToast(`🤖 成功补齐 ${addedCount} 条国内外 AI 黄金分流规则！`, 'success');
     }
 
     async function saveRulesToServer() {
