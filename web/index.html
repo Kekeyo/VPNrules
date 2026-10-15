@@ -744,18 +744,15 @@
       background: var(--switch-bg);
       border: 1px solid var(--border);
       border-radius: 10px;
-      padding: 14px;
+      padding: 10px 14px;
       display: flex;
-      flex-direction: column;
-      gap: 10px;
+      align-items: center;
+      gap: 8px;
       margin-bottom: 14px;
     }
-    .rules-add-inputs {
-      display: grid;
-      grid-template-columns: 200px 1fr 180px;
-      gap: 10px;
-    }
-    .rules-select-type, .rules-select-target {
+    .rules-select-type {
+      width: 175px;
+      flex-shrink: 0;
       background: var(--bg-input);
       border: 1px solid var(--border);
       border-radius: 6px;
@@ -764,12 +761,30 @@
       font-size: 13px;
       outline: none;
     }
-    .rules-add-actions {
-      display: flex;
-      justify-content: flex-end;
-      gap: 8px;
+    .rules-input-payload {
+      flex: 1;
+      min-width: 0;
+      background: var(--bg-input);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: 8px 12px;
+      color: var(--text);
+      font-size: 13px;
+      outline: none;
+    }
+    .rules-select-target {
+      width: 165px;
+      flex-shrink: 0;
+      background: var(--bg-input);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: 8px 10px;
+      color: var(--text);
+      font-size: 13px;
+      outline: none;
     }
     .btn-add-rule {
+      flex-shrink: 0;
       background: var(--primary);
       color: #fff;
       border: none;
@@ -778,12 +793,14 @@
       font-size: 13px;
       font-weight: 600;
       cursor: pointer;
+      white-space: nowrap;
       transition: all 0.2s;
     }
     .btn-add-rule:hover {
       opacity: 0.9;
     }
     .btn-preset-rule {
+      flex-shrink: 0;
       background: var(--pill-bg);
       border: 1px solid var(--border);
       color: var(--text);
@@ -791,6 +808,7 @@
       padding: 8px 14px;
       font-size: 13px;
       cursor: pointer;
+      white-space: nowrap;
       transition: all 0.2s;
     }
     .btn-preset-rule:hover {
@@ -895,28 +913,26 @@
 
     .rules-modal-footer {
       display: flex;
-      justify-content: space-between;
+      justify-content: flex-end;
       align-items: center;
+      gap: 12px;
       margin-top: 16px;
       padding-top: 14px;
       border-top: 1px solid var(--border);
-    }
-    .rules-footer-tip {
-      font-size: 11px;
-      color: var(--text-muted);
     }
     .btn-save-rules {
       background: linear-gradient(135deg, var(--primary), var(--accent));
       color: #fff;
       border: none;
       border-radius: 8px;
-      padding: 10px 20px;
+      padding: 11px 24px;
       font-size: 14px;
       font-weight: 700;
       cursor: pointer;
       display: flex;
       align-items: center;
       gap: 8px;
+      white-space: nowrap;
       box-shadow: 0 4px 15px rgba(6,182,212,0.4);
       transition: all 0.2s;
     }
@@ -929,9 +945,16 @@
       border: 1px solid var(--border);
       color: var(--text);
       border-radius: 8px;
-      padding: 10px 16px;
+      padding: 11px 22px;
       font-size: 14px;
       cursor: pointer;
+      white-space: nowrap;
+      min-width: 80px;
+      text-align: center;
+      transition: all 0.2s;
+    }
+    .btn-cancel:hover {
+      background: var(--pill-hover);
     }
   </style>
 </head>
@@ -1117,27 +1140,23 @@
         <button class="rules-close-btn" onclick="closeRulesModal()">✕</button>
       </div>
 
-      <!-- 快速增添规则栏 (自动增添) -->
+      <!-- 快速增添规则栏 (单排流线型布局，一整排无折行) -->
       <div class="rules-add-bar">
-        <div class="rules-add-inputs">
-          <select id="ruleTypeInput" class="rules-select-type">
-            <option value="DOMAIN-SUFFIX">DOMAIN-SUFFIX (域名后缀)</option>
-            <option value="DOMAIN-KEYWORD">DOMAIN-KEYWORD (关键词)</option>
-            <option value="DOMAIN">DOMAIN (精确域名)</option>
-            <option value="IP-CIDR">IP-CIDR (网段)</option>
-            <option value="GEOIP">GEOIP (国家代码)</option>
-          </select>
-          <input type="text" id="rulePayloadInput" placeholder="输入匹配域名，如：claude.ai 或 kimi.moonshot.cn" onkeydown="if(event.key==='Enter') addNewRule()">
-          <select id="ruleTargetInput" class="rules-select-target">
-            <option value="节点选择">👉 节点选择 (随总控 VIP)</option>
-            <option value="DIRECT">⚡ DIRECT (国内直连)</option>
-            <option value="REJECT">⛔ REJECT (拦截阻断)</option>
-          </select>
-        </div>
-        <div class="rules-add-actions">
-          <button class="btn-add-rule" onclick="addNewRule()">➕ 添加规则</button>
-          <button class="btn-preset-rule" onclick="loadDefaultAIRules()" title="一键填入全套 65 条前置 AI 黄金规则">🤖 补全全套 AI 规则 (65条)</button>
-        </div>
+        <select id="ruleTypeInput" class="rules-select-type">
+          <option value="DOMAIN-SUFFIX">DOMAIN-SUFFIX (后缀)</option>
+          <option value="DOMAIN-KEYWORD">DOMAIN-KEYWORD (关键词)</option>
+          <option value="DOMAIN">DOMAIN (精确)</option>
+          <option value="IP-CIDR">IP-CIDR (网段)</option>
+          <option value="GEOIP">GEOIP (国家)</option>
+        </select>
+        <input type="text" id="rulePayloadInput" class="rules-input-payload" placeholder="输入匹配域名，如：claude.ai 或 x.ai" onkeydown="if(event.key==='Enter') addNewRule()">
+        <select id="ruleTargetInput" class="rules-select-target">
+          <option value="节点选择">👉 节点选择 (随总控VIP)</option>
+          <option value="DIRECT">⚡ DIRECT (国内直连)</option>
+          <option value="REJECT">⛔ REJECT (拦截阻断)</option>
+        </select>
+        <button class="btn-add-rule" onclick="addNewRule()">➕ 添加</button>
+        <button class="btn-preset-rule" onclick="loadDefaultAIRules()" title="一键补全全套 65 条前置 AI 黄金规则">🤖 补齐 AI 规则</button>
       </div>
 
       <!-- 搜索与筛选工具栏 -->
@@ -1158,18 +1177,13 @@
         <!-- 动态渲染 -->
       </div>
 
-      <!-- 底部操作与同步栏 -->
+      <!-- 底部操作与同步栏 (彻底删除冗余小字，单排整洁展示) -->
       <div class="rules-modal-footer">
-        <div class="rules-footer-tip">
-          💡 提示：点击保存后，自动更新当前订阅的 rules 覆写配置并毫秒级备份，Verge 重新加载后立即生效。
-        </div>
-        <div style="display: flex; gap: 10px;">
-          <button class="btn-cancel" onclick="closeRulesModal()">取消</button>
-          <button class="btn-save-rules" id="saveRulesBtn" onclick="saveRulesToServer()">
-            <span class="spinner" id="rulesSpinner"></span>
-            <span id="saveRulesBtnText">💾 保存规则并同步至 Clash Verge</span>
-          </button>
-        </div>
+        <button class="btn-cancel" onclick="closeRulesModal()">取消</button>
+        <button class="btn-save-rules" id="saveRulesBtn" onclick="saveRulesToServer()">
+          <span class="spinner" id="rulesSpinner"></span>
+          <span id="saveRulesBtnText">💾 保存规则并同步至 Clash Verge</span>
+        </button>
       </div>
     </div>
   </div>
