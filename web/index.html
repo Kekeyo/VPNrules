@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Clash Verge VIP 节点编排控制台</title>
+  <title>Verge 节点重组</title>
   <style>
     /* 深色主题变量 (默认) */
     html[data-theme="dark"] {
@@ -97,37 +97,42 @@
     .brand {
       display: flex;
       align-items: center;
-      gap: 12px;
+      gap: 10px;
       background: var(--bg-header);
       backdrop-filter: blur(16px);
       border: 1px solid var(--border);
       border-radius: 12px;
-      padding: 9px 18px;
+      padding: 8px 16px;
       box-shadow: var(--header-shadow);
       transition: all 0.3s ease;
+      user-select: none;
     }
     .brand-icon {
-      font-size: 20px;
-      background: linear-gradient(135deg, var(--primary), var(--accent));
-      width: 34px;
-      height: 34px;
+      font-size: 15px;
+      background: rgba(6, 182, 212, 0.12);
+      border: 1px solid rgba(6, 182, 212, 0.25);
+      color: var(--primary);
+      width: 28px;
+      height: 28px;
       display: flex;
       align-items: center;
       justify-content: center;
-      border-radius: 8px;
-      box-shadow: 0 0 12px rgba(6,182,212,0.35);
+      border-radius: 7px;
+      transition: all 0.2s ease;
+      flex-shrink: 0;
+    }
+    html[data-theme="dark"] .brand-icon {
+      background: rgba(6, 182, 212, 0.16);
+      border-color: rgba(6, 182, 212, 0.35);
+      color: #38bdf8;
     }
     .brand-title {
-      font-size: 15px;
+      font-size: 14.5px;
       font-weight: 700;
-      letter-spacing: 0.3px;
+      letter-spacing: 0.4px;
       color: var(--text);
-      line-height: 1.25;
-    }
-    .brand-subtitle {
-      font-size: 11.5px;
-      color: var(--text-muted);
-      line-height: 1.25;
+      line-height: 1;
+      white-space: nowrap;
     }
 
     .top-controls {
@@ -1755,10 +1760,7 @@
   <header>
     <div class="brand">
       <div class="brand-icon">🌐</div>
-      <div>
-        <div class="brand-title">Clash Verge VIP 节点编排控制台</div>
-        <div class="brand-subtitle">可视化自由勾选 · 自定义分组 · 一键无缝注入</div>
-      </div>
+      <div class="brand-title">Verge 节点重组</div>
     </div>
     <div class="top-controls">
       <div class="sub-selector">
