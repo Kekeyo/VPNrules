@@ -317,6 +317,164 @@
     .action-btn-main:active {
       transform: translateY(0);
     }
+    .action-btn-main.loading {
+      pointer-events: none;
+      opacity: 0.85;
+      background: linear-gradient(135deg, #0284c7, #6366f1);
+      cursor: wait;
+    }
+    .action-btn-main .spinner {
+      display: none;
+      width: 18px;
+      height: 18px;
+      border: 2px solid rgba(255, 255, 255, 0.3);
+      border-top-color: #fff;
+      border-radius: 50%;
+      animation: spin 0.8s linear infinite;
+    }
+    .action-btn-main.loading .spinner {
+      display: inline-block;
+    }
+
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+
+    /* 全屏彩花粒子 Canvas */
+    #confettiCanvas {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      pointer-events: none;
+      z-index: 99999;
+    }
+
+    /* 科技感成功完成模态框 */
+    .modal-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(15, 23, 42, 0.75);
+      backdrop-filter: blur(8px);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 10000;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.3s ease;
+    }
+    .modal-overlay.active {
+      opacity: 1;
+      pointer-events: auto;
+    }
+    .modal-card {
+      background: var(--bg-surface);
+      border: 1px solid var(--border-active);
+      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5), 0 0 30px rgba(6, 182, 212, 0.25);
+      border-radius: 16px;
+      width: 90%;
+      max-width: 480px;
+      padding: 32px 28px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      transform: scale(0.85) translateY(20px);
+      transition: all 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+    .modal-overlay.active .modal-card {
+      transform: scale(1) translateY(0);
+    }
+
+    .modal-icon-wrap {
+      width: 68px;
+      height: 68px;
+      border-radius: 50%;
+      background: rgba(16, 185, 129, 0.15);
+      border: 2px solid #10b981;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 16px;
+      box-shadow: 0 0 25px rgba(16, 185, 129, 0.35);
+      animation: pulse-badge 2s infinite;
+    }
+    @keyframes pulse-badge {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.08); }
+    }
+
+    .modal-title {
+      font-size: 20px;
+      font-weight: 800;
+      color: var(--text);
+      margin-bottom: 8px;
+    }
+    .modal-subtitle {
+      font-size: 13px;
+      color: var(--text-muted);
+      line-height: 1.5;
+      margin-bottom: 20px;
+    }
+
+    .modal-stats {
+      width: 100%;
+      background: var(--switch-bg);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 14px 18px;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+      margin-bottom: 20px;
+      text-align: left;
+    }
+    .modal-stat-item {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+    .stat-label {
+      font-size: 11px;
+      color: var(--text-muted);
+    }
+    .stat-value {
+      font-size: 14px;
+      font-weight: 700;
+      color: var(--primary);
+    }
+
+    .modal-step-box {
+      width: 100%;
+      background: rgba(6, 182, 212, 0.08);
+      border: 1px dashed var(--primary);
+      border-radius: 8px;
+      padding: 12px;
+      font-size: 12px;
+      color: var(--text);
+      line-height: 1.6;
+      margin-bottom: 24px;
+    }
+
+    .modal-btn-confirm {
+      width: 100%;
+      background: linear-gradient(135deg, #10b981, #06b6d4);
+      color: #fff;
+      border: none;
+      border-radius: 10px;
+      padding: 14px;
+      font-size: 15px;
+      font-weight: 700;
+      cursor: pointer;
+      box-shadow: 0 4px 20px rgba(16, 185, 129, 0.4);
+      transition: all 0.2s;
+    }
+    .modal-btn-confirm:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 25px rgba(16, 185, 129, 0.6);
+    }
 
     /* 右侧卡片区 */
     .content-area {
@@ -574,8 +732,9 @@
         <span class="selected-count" id="selectedCountDisplay">0</span>
       </div>
 
-      <button class="action-btn-main" onclick="saveAndApply()">
-        <span>🚀 一键生成并写入 Clash Verge</span>
+      <button class="action-btn-main" id="saveBtn" onclick="saveAndApply()">
+        <span class="spinner"></span>
+        <span id="saveBtnText">🚀 一键生成并写入 Clash Verge</span>
       </button>
 
       <div style="font-size: 11px; color: var(--text-muted); line-height: 1.5; background: var(--switch-bg); padding: 10px; border-radius: 6px; border: 1px solid var(--border);">
@@ -623,6 +782,50 @@
     <span id="toastMsg" style="font-size: 14px;">操作成功</span>
   </div>
 
+  <!-- 彩花粒子 Canvas -->
+  <canvas id="confettiCanvas"></canvas>
+
+  <!-- 科技感成功完成模态框 -->
+  <div class="modal-overlay" id="successModal" onclick="handleModalOverlayClick(event)">
+    <div class="modal-card">
+      <div class="modal-icon-wrap">
+        <svg width="34" height="34" viewBox="0 0 24 24" fill="none" stroke="#10b981" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+          <polyline points="20 6 9 17 4 12"></polyline>
+        </svg>
+      </div>
+      <h3 class="modal-title">🎉 专属 VIP 分组注入成功！</h3>
+      <p class="modal-subtitle">配置文件已成功更新并双重快照备份，全套 65 条前置 AI 规则与总控穿透已挂载就绪。</p>
+
+      <div class="modal-stats">
+        <div class="modal-stat-item">
+          <span class="stat-label">分组名称</span>
+          <span class="stat-value" id="modalGroupName">-</span>
+        </div>
+        <div class="modal-stat-item">
+          <span class="stat-label">生效节点总数</span>
+          <span class="stat-value" id="modalNodeCount">0 个节点</span>
+        </div>
+        <div class="modal-stat-item">
+          <span class="stat-label">调度模式</span>
+          <span class="stat-value" id="modalGroupType">手动选择</span>
+        </div>
+        <div class="modal-stat-item">
+          <span class="stat-label">安全快照</span>
+          <span class="stat-value" style="color: #10b981;">已双重备份</span>
+        </div>
+      </div>
+
+      <div class="modal-step-box">
+        <b>👉 关键生效步骤：</b><br>
+        打开 <b>Clash Verge</b> 客户端 ➔ 左侧进入<b>「订阅」</b>页面 ➔ 对当前订阅卡片<b>右键点击「重新加载」</b>即可瞬间生效！
+      </div>
+
+      <button class="modal-btn-confirm" onclick="closeSuccessModal()">
+        ✨ 明白了，去重新加载生效
+      </button>
+    </div>
+  </div>
+
   <script>
     let allNodes = [];
     let selectedSet = new Set();
@@ -662,6 +865,18 @@
     window.addEventListener('DOMContentLoaded', async () => {
       initTheme();
       await loadProfiles();
+
+      const urlParams = new URLSearchParams(window.location.search);
+      if (urlParams.get('test_modal')) {
+        setTimeout(() => {
+          openSuccessModal({
+            groupName: '🇯🇵 日本VIP专属专线',
+            nodeCount: 23,
+            groupType: '手动选择 (select)'
+          });
+          launchConfetti();
+        }, 300);
+      }
     });
 
     async function loadProfiles() {
@@ -885,6 +1100,11 @@
         return;
       }
 
+      const btn = document.getElementById('saveBtn');
+      const btnText = document.getElementById('saveBtnText');
+      btn.classList.add('loading');
+      btnText.textContent = '🚀 正在注入配置并生成双重快照...';
+
       const uid = document.getElementById('subSelect').value;
       const payload = {
         uid: uid,
@@ -904,13 +1124,114 @@
         });
         const data = await res.json();
         if (data.success) {
-          showToast(`🎉 ${data.message}！请在 Verge 客户端右键『重新加载』生效`, 'success');
+          // 1. 触发全屏五彩纸屑粒子特效
+          launchConfetti();
+
+          // 2. 居中弹出科技感模态框
+          openSuccessModal({
+            groupName: groupName,
+            nodeCount: selectedSet.size,
+            groupType: currentGroupType === 'select' ? '手动选择 (select)' : '自动测速 (url-test)'
+          });
+
+          // 3. 伴随 Toast 提示
+          showToast(`🎉 注入成功！请在 Verge 客户端右键『重新加载』生效`, 'success');
+
+          // 4. 静默拉取刷新已有分组列表
+          await loadNodes();
         } else {
           showToast(`❌ 保存失败: ${data.error}`, 'error');
         }
       } catch (err) {
         showToast('❌ 网络错误，保存失败', 'error');
+      } finally {
+        btn.classList.remove('loading');
+        btnText.textContent = '🚀 一键生成并写入 Clash Verge';
       }
+    }
+
+    // 成功模态框控制
+    function openSuccessModal(info) {
+      document.getElementById('modalGroupName').textContent = info.groupName;
+      document.getElementById('modalNodeCount').textContent = `${info.nodeCount} 个节点`;
+      document.getElementById('modalGroupType').textContent = info.groupType;
+      document.getElementById('successModal').classList.add('active');
+    }
+
+    function closeSuccessModal() {
+      document.getElementById('successModal').classList.remove('active');
+    }
+
+    function handleModalOverlayClick(e) {
+      if (e.target.id === 'successModal') {
+        closeSuccessModal();
+      }
+    }
+
+    // 监听 ESC 键关闭模态框
+    window.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') closeSuccessModal();
+    });
+
+    // 纯原生 Canvas 炫彩五彩纸屑庆祝动效
+    function launchConfetti() {
+      const canvas = document.getElementById('confettiCanvas');
+      if (!canvas) return;
+      const ctx = canvas.getContext('2d');
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+
+      const particles = [];
+      const colors = ['#06b6d4', '#8b5cf6', '#10b981', '#f59e0b', '#ec4899', '#3b82f6', '#14b8a6'];
+      const count = 130;
+
+      for (let i = 0; i < count; i++) {
+        particles.push({
+          x: canvas.width / 2 + (Math.random() - 0.5) * 260,
+          y: canvas.height / 2 + 80,
+          vx: (Math.random() - 0.5) * 18,
+          vy: -Math.random() * 19 - 8,
+          size: Math.random() * 9 + 4,
+          color: colors[Math.floor(Math.random() * colors.length)],
+          rotation: Math.random() * 360,
+          vRot: (Math.random() - 0.5) * 12,
+          gravity: 0.42,
+          opacity: 1,
+          decay: Math.random() * 0.007 + 0.005
+        });
+      }
+
+      let animId;
+      function animate() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        let alive = false;
+        particles.forEach(p => {
+          p.x += p.vx;
+          p.y += p.vy;
+          p.vy += p.gravity;
+          p.rotation += p.vRot;
+          p.opacity -= p.decay;
+
+          if (p.opacity > 0) {
+            alive = true;
+            ctx.save();
+            ctx.translate(p.x, p.y);
+            ctx.rotate((p.rotation * Math.PI) / 180);
+            ctx.fillStyle = p.color;
+            ctx.globalAlpha = Math.max(0, p.opacity);
+            ctx.fillRect(-p.size / 2, -p.size / 2, p.size, p.size * 0.65);
+            ctx.restore();
+          }
+        });
+
+        if (alive) {
+          animId = requestAnimationFrame(animate);
+        } else {
+          ctx.clearRect(0, 0, canvas.width, canvas.height);
+          cancelAnimationFrame(animId);
+        }
+      }
+      animate();
     }
 
     function showToast(msg, type='success') {

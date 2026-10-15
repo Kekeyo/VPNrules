@@ -45,6 +45,11 @@
 
 ![Group Recall & Edit](docs/images/04_group_recall_and_edit.png)
 
+### 🎆 一键写入炫彩彩花与注入成功反馈
+> 点击一键生成后，全屏喷发漫天五彩粒子，居中弹出极客科技风完成模态框，直观呈现注入统计与重载指引。
+
+![Success Animation Modal](docs/images/05_success_animation_modal.png)
+
 ---
 
 ## 🚀 极简使用方式 (3 步上手)
