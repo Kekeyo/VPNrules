@@ -662,6 +662,277 @@
       transform: translateY(0);
       opacity: 1;
     }
+
+    /* 顶栏规则中心按钮 */
+    .rules-toggle-btn {
+      background: var(--bg-surface);
+      border: 1px solid var(--border-active);
+      color: var(--primary);
+      padding: 8px 16px;
+      border-radius: 8px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 13px;
+      font-weight: 600;
+      transition: all 0.2s;
+      box-shadow: 0 2px 8px rgba(6,182,212,0.15);
+    }
+    .rules-toggle-btn:hover {
+      background: rgba(6, 182, 212, 0.1);
+      transform: translateY(-1px);
+      box-shadow: 0 4px 15px rgba(6,182,212,0.3);
+    }
+
+    /* 规则中心大模态框 */
+    .rules-modal-card {
+      max-width: 840px !important;
+      width: 95% !important;
+      max-height: 88vh;
+      display: flex;
+      flex-direction: column;
+      padding: 24px 28px !important;
+      text-align: left !important;
+      align-items: stretch !important;
+    }
+    .rules-modal-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding-bottom: 16px;
+      border-bottom: 1px solid var(--border);
+      margin-bottom: 16px;
+    }
+    .rules-header-badge {
+      width: 40px;
+      height: 40px;
+      border-radius: 8px;
+      background: rgba(6, 182, 212, 0.15);
+      border: 1px solid var(--border-active);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 20px;
+    }
+    .rules-modal-title {
+      font-size: 18px;
+      font-weight: 800;
+      color: var(--text);
+    }
+    .rules-modal-desc {
+      font-size: 12px;
+      color: var(--text-muted);
+      margin-top: 2px;
+    }
+    .rules-close-btn {
+      background: none;
+      border: none;
+      color: var(--text-muted);
+      font-size: 20px;
+      cursor: pointer;
+      padding: 4px 8px;
+      border-radius: 4px;
+      transition: all 0.2s;
+    }
+    .rules-close-btn:hover {
+      color: #ef4444;
+      background: rgba(239, 68, 68, 0.1);
+    }
+
+    .rules-add-bar {
+      background: var(--switch-bg);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 14px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      margin-bottom: 14px;
+    }
+    .rules-add-inputs {
+      display: grid;
+      grid-template-columns: 200px 1fr 180px;
+      gap: 10px;
+    }
+    .rules-select-type, .rules-select-target {
+      background: var(--bg-input);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: 8px 10px;
+      color: var(--text);
+      font-size: 13px;
+      outline: none;
+    }
+    .rules-add-actions {
+      display: flex;
+      justify-content: flex-end;
+      gap: 8px;
+    }
+    .btn-add-rule {
+      background: var(--primary);
+      color: #fff;
+      border: none;
+      border-radius: 6px;
+      padding: 8px 16px;
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .btn-add-rule:hover {
+      opacity: 0.9;
+    }
+    .btn-preset-rule {
+      background: var(--pill-bg);
+      border: 1px solid var(--border);
+      color: var(--text);
+      border-radius: 6px;
+      padding: 8px 14px;
+      font-size: 13px;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .btn-preset-rule:hover {
+      border-color: var(--primary);
+      color: var(--primary);
+    }
+
+    .rules-search-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 12px;
+    }
+    .rules-filter-pills {
+      display: flex;
+      gap: 6px;
+    }
+
+    .rules-list-container {
+      flex: 1;
+      overflow-y: auto;
+      max-height: 380px;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      background: var(--bg-input);
+      padding: 8px;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+    .rule-item-card {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 8px 12px;
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      font-size: 13px;
+      transition: all 0.2s;
+    }
+    .rule-item-card:hover {
+      background: var(--bg-card-hover);
+      border-color: var(--text-muted);
+    }
+    .rule-type-badge {
+      font-family: monospace;
+      font-size: 11px;
+      padding: 2px 8px;
+      border-radius: 4px;
+      background: rgba(139, 92, 246, 0.15);
+      color: var(--accent);
+      border: 1px solid rgba(139, 92, 246, 0.3);
+      font-weight: 600;
+    }
+    .rule-payload-text {
+      font-weight: 600;
+      color: var(--node-name-color);
+      flex: 1;
+      margin: 0 12px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .rule-target-badge {
+      font-size: 11px;
+      padding: 2px 8px;
+      border-radius: 4px;
+      font-weight: 600;
+    }
+    .rule-target-badge.selector {
+      background: rgba(6, 182, 212, 0.15);
+      color: var(--primary);
+      border: 1px solid rgba(6, 182, 212, 0.4);
+    }
+    .rule-target-badge.direct {
+      background: rgba(16, 185, 129, 0.15);
+      color: #10b981;
+      border: 1px solid rgba(16, 185, 129, 0.4);
+    }
+    .rule-target-badge.reject {
+      background: rgba(239, 68, 68, 0.15);
+      color: #ef4444;
+      border: 1px solid rgba(239, 68, 68, 0.4);
+    }
+    .rule-del-btn {
+      background: none;
+      border: none;
+      color: var(--text-muted);
+      cursor: pointer;
+      padding: 4px;
+      border-radius: 4px;
+      margin-left: 8px;
+      font-size: 14px;
+      transition: all 0.2s;
+    }
+    .rule-del-btn:hover {
+      color: #ef4444;
+      background: rgba(239, 68, 68, 0.1);
+    }
+
+    .rules-modal-footer {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-top: 16px;
+      padding-top: 14px;
+      border-top: 1px solid var(--border);
+    }
+    .rules-footer-tip {
+      font-size: 11px;
+      color: var(--text-muted);
+    }
+    .btn-save-rules {
+      background: linear-gradient(135deg, var(--primary), var(--accent));
+      color: #fff;
+      border: none;
+      border-radius: 8px;
+      padding: 10px 20px;
+      font-size: 14px;
+      font-weight: 700;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      box-shadow: 0 4px 15px rgba(6,182,212,0.4);
+      transition: all 0.2s;
+    }
+    .btn-save-rules:hover {
+      opacity: 0.95;
+      transform: translateY(-1px);
+    }
+    .btn-cancel {
+      background: var(--pill-bg);
+      border: 1px solid var(--border);
+      color: var(--text);
+      border-radius: 8px;
+      padding: 10px 16px;
+      font-size: 14px;
+      cursor: pointer;
+    }
   </style>
 </head>
 <body>
@@ -679,6 +950,12 @@
         <label for="subSelect">当前活动订阅：</label>
         <select id="subSelect" onchange="loadNodes()"></select>
       </div>
+
+      <!-- 规则与模板管理按钮 (红色框右侧点一下) -->
+      <button class="rules-toggle-btn" id="rulesToggleBtn" onclick="openRulesModal()" title="设置与自定义当前订阅的前置分流规则与黄金模板">
+        <span style="font-size: 15px;">⚡</span>
+        <span>分流规则与模板</span>
+      </button>
 
       <!-- 深色/浅色模式切换按钮 -->
       <button class="theme-toggle" id="themeToggle" onclick="toggleTheme()" title="点击切换深色/浅色模式">
@@ -826,6 +1103,77 @@
     </div>
   </div>
 
+  <!-- 规则配置与黄金模板管理大厅模态框 (点击红框右侧按钮唤出) -->
+  <div class="modal-overlay" id="rulesModal" onclick="handleRulesOverlayClick(event)">
+    <div class="modal-card rules-modal-card">
+      <div class="rules-modal-header">
+        <div style="display: flex; align-items: center; gap: 10px;">
+          <div class="rules-header-badge">⚡</div>
+          <div>
+            <div class="rules-modal-title">前置分流规则与黄金模板中心</div>
+            <div class="rules-modal-desc">排在所有常规流量最顶层（优先级最高），命中的请求优先分流。支持实时搜索、增添与一键补全。</div>
+          </div>
+        </div>
+        <button class="rules-close-btn" onclick="closeRulesModal()">✕</button>
+      </div>
+
+      <!-- 快速增添规则栏 (自动增添) -->
+      <div class="rules-add-bar">
+        <div class="rules-add-inputs">
+          <select id="ruleTypeInput" class="rules-select-type">
+            <option value="DOMAIN-SUFFIX">DOMAIN-SUFFIX (域名后缀)</option>
+            <option value="DOMAIN-KEYWORD">DOMAIN-KEYWORD (关键词)</option>
+            <option value="DOMAIN">DOMAIN (精确域名)</option>
+            <option value="IP-CIDR">IP-CIDR (网段)</option>
+            <option value="GEOIP">GEOIP (国家代码)</option>
+          </select>
+          <input type="text" id="rulePayloadInput" placeholder="输入匹配域名，如：claude.ai 或 kimi.moonshot.cn" onkeydown="if(event.key==='Enter') addNewRule()">
+          <select id="ruleTargetInput" class="rules-select-target">
+            <option value="节点选择">👉 节点选择 (随总控 VIP)</option>
+            <option value="DIRECT">⚡ DIRECT (国内直连)</option>
+            <option value="REJECT">⛔ REJECT (拦截阻断)</option>
+          </select>
+        </div>
+        <div class="rules-add-actions">
+          <button class="btn-add-rule" onclick="addNewRule()">➕ 添加规则</button>
+          <button class="btn-preset-rule" onclick="loadDefaultAIRules()" title="一键填入全套 65 条前置 AI 黄金规则">🤖 补全全套 AI 规则 (65条)</button>
+        </div>
+      </div>
+
+      <!-- 搜索与筛选工具栏 -->
+      <div class="rules-search-bar">
+        <div class="search-box" style="flex: 1;">
+          <span class="search-icon">🔍</span>
+          <input type="text" id="ruleSearchInput" placeholder="实时搜索规则（如 openai, claude, google, gemini, direct 等）..." oninput="renderRulesList()">
+        </div>
+        <div class="rules-filter-pills">
+          <div class="pill active" id="rulePillAll" onclick="setRuleTargetFilter('ALL', this)">全部 (<span id="ruleCountAll">0</span>)</div>
+          <div class="pill" id="rulePillSelector" onclick="setRuleTargetFilter('节点选择', this)">节点选择 (<span id="ruleCountSelector">0</span>)</div>
+          <div class="pill" id="rulePillDirect" onclick="setRuleTargetFilter('DIRECT', this)">DIRECT直连 (<span id="ruleCountDirect">0</span>)</div>
+        </div>
+      </div>
+
+      <!-- 规则卡片列表大厅 -->
+      <div class="rules-list-container" id="rulesListContainer">
+        <!-- 动态渲染 -->
+      </div>
+
+      <!-- 底部操作与同步栏 -->
+      <div class="rules-modal-footer">
+        <div class="rules-footer-tip">
+          💡 提示：点击保存后，自动更新当前订阅的 rules 覆写配置并毫秒级备份，Verge 重新加载后立即生效。
+        </div>
+        <div style="display: flex; gap: 10px;">
+          <button class="btn-cancel" onclick="closeRulesModal()">取消</button>
+          <button class="btn-save-rules" id="saveRulesBtn" onclick="saveRulesToServer()">
+            <span class="spinner" id="rulesSpinner"></span>
+            <span id="saveRulesBtnText">💾 保存规则并同步至 Clash Verge</span>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
   <script>
     let allNodes = [];
     let selectedSet = new Set();
@@ -876,6 +1224,12 @@
           });
           launchConfetti();
         }, 300);
+      }
+
+      if (urlParams.get('test_rules')) {
+        setTimeout(() => {
+          openRulesModal();
+        }, 400);
       }
     });
 
@@ -1150,6 +1504,230 @@
       }
     }
 
+    // ============================================================
+    // 前置分流规则与黄金模板管理中心逻辑 (Rules Modal Logic)
+    // ============================================================
+    let currentRules = [];
+    let currentRuleTargetFilter = 'ALL';
+
+    async function openRulesModal() {
+      const uid = document.getElementById('subSelect').value;
+      if (!uid) {
+        showToast('⚠️ 请先选择一个订阅', 'warning');
+        return;
+      }
+
+      document.getElementById('rulesModal').classList.add('active');
+      const container = document.getElementById('rulesListContainer');
+      container.innerHTML = `<div style="text-align: center; padding: 40px; color: var(--text-muted);">⏳ 正在加载前置分流规则...</div>`;
+
+      try {
+        const res = await fetch(`/api/rules?uid=${uid}`);
+        const data = await res.json();
+        currentRules = data.rules || [];
+        document.getElementById('ruleSearchInput').value = '';
+        currentRuleTargetFilter = 'ALL';
+        updateRuleFilterPills();
+        renderRulesList();
+      } catch (err) {
+        container.innerHTML = `<div style="text-align: center; padding: 40px; color: #ef4444;">❌ 加载规则失败，请检查服务</div>`;
+      }
+    }
+
+    function closeRulesModal() {
+      document.getElementById('rulesModal').classList.remove('active');
+    }
+
+    function handleRulesOverlayClick(e) {
+      if (e.target.id === 'rulesModal') closeRulesModal();
+    }
+
+    function setRuleTargetFilter(target, el) {
+      currentRuleTargetFilter = target;
+      document.querySelectorAll('.rules-filter-pills .pill').forEach(p => p.classList.remove('active'));
+      el.classList.add('active');
+      renderRulesList();
+    }
+
+    function updateRuleFilterPills() {
+      const allCount = currentRules.length;
+      const selectorCount = currentRules.filter(r => (r.target || '节点选择') === '节点选择').length;
+      const directCount = currentRules.filter(r => r.target === 'DIRECT').length;
+
+      document.getElementById('ruleCountAll').textContent = allCount;
+      document.getElementById('ruleCountSelector').textContent = selectorCount;
+      document.getElementById('ruleCountDirect').textContent = directCount;
+    }
+
+    function renderRulesList() {
+      const container = document.getElementById('rulesListContainer');
+      const query = (document.getElementById('ruleSearchInput').value || '').trim().toLowerCase();
+
+      updateRuleFilterPills();
+
+      const filtered = currentRules.filter(r => {
+        // 目标策略过滤
+        if (currentRuleTargetFilter !== 'ALL' && (r.target || '节点选择') !== currentRuleTargetFilter) {
+          return false;
+        }
+        // 关键词搜索
+        if (query) {
+          const matchPayload = (r.payload || '').toLowerCase().includes(query);
+          const matchType = (r.type || '').toLowerCase().includes(query);
+          const matchTarget = (r.target || '').toLowerCase().includes(query);
+          if (!matchPayload && !matchType && !matchTarget) return false;
+        }
+        return true;
+      });
+
+      container.innerHTML = '';
+      if (filtered.length === 0) {
+        container.innerHTML = `<div style="text-align: center; padding: 50px; color: var(--text-muted); font-size: 13px;">
+          🔍 未找到匹配条件的规则（可尝试搜索其他关键词或上方快速添加）
+        </div>`;
+        return;
+      }
+
+      filtered.forEach((r, idx) => {
+        const card = document.createElement('div');
+        card.className = 'rule-item-card';
+
+        let targetClass = 'selector';
+        if (r.target === 'DIRECT') targetClass = 'direct';
+        else if (r.target === 'REJECT') targetClass = 'reject';
+
+        card.innerHTML = `
+          <div style="display: flex; align-items: center; min-width: 0; flex: 1;">
+            <span style="font-size: 11px; opacity: 0.5; width: 26px;">#${idx + 1}</span>
+            <span class="rule-type-badge">${escapeHtml(r.type || 'DOMAIN-SUFFIX')}</span>
+            <span class="rule-payload-text" title="${escapeHtml(r.payload || '')}">${escapeHtml(r.payload || '')}</span>
+          </div>
+          <div style="display: flex; align-items: center; gap: 8px;">
+            <span style="font-size: 12px; color: var(--text-muted);">➔</span>
+            <span class="rule-target-badge ${targetClass}">${escapeHtml(r.target || '节点选择')}</span>
+            <button class="rule-del-btn" title="删除本条规则" onclick="deleteRule(${idx})">🗑️</button>
+          </div>
+        `;
+        container.appendChild(card);
+      });
+    }
+
+    function addNewRule() {
+      const type = document.getElementById('ruleTypeInput').value;
+      const payload = document.getElementById('rulePayloadInput').value.trim();
+      const target = document.getElementById('ruleTargetInput').value;
+
+      if (!payload) {
+        showToast('⚠️ 请输入规则匹配内容（如域名）', 'warning');
+        return;
+      }
+
+      // 检查是否重复
+      const exists = currentRules.some(r => r.type === type && r.payload.toLowerCase() === payload.toLowerCase());
+      if (exists) {
+        showToast('⚠️ 该规则已存在，请勿重复添加', 'warning');
+        return;
+      }
+
+      // 新增至最前面（优先级最高）
+      currentRules.unshift({
+        raw: `${type},${payload},${target}`,
+        type: type,
+        payload: payload,
+        target: target
+      });
+
+      document.getElementById('rulePayloadInput').value = '';
+      renderRulesList();
+      showToast(`✨ 成功添加规则：${payload} ➔ ${target}`, 'success');
+    }
+
+    function deleteRule(idx) {
+      const item = currentRules[idx];
+      currentRules.splice(idx, 1);
+      renderRulesList();
+      showToast(`🗑️ 已移除规则：${item ? item.payload : ''}`, 'info');
+    }
+
+    // 一键补全 65 条前置 AI 黄金规则
+    function loadDefaultAIRules() {
+      const aiDomains = [
+        'claude.ai', 'claude.com', 'anthropic.com', 'openai.com', 'chatgpt.com',
+        'oaistatic.com', 'oaiusercontent.com', 'sora.com', 'perplexity.ai', 'pplx.ai',
+        'grok.com', 'x.ai', 'deepseek.com', 'gemini.google.com', 'generativelanguage.googleapis.com',
+        'aistudio.google.com', 'ai.google.dev', 'bard.google.com', 'antigravity.google',
+        'antigravity-unleash.goog', 'mistral.ai', 'cohere.com', 'openrouter.ai',
+        'huggingface.co', 'hf.co', 'groq.com', 'together.ai', 'copilot.microsoft.com',
+        'githubcopilot.com', 'cursor.com', 'cursor.sh', 'windsurf.com', 'codeium.com',
+        'kimi.com', 'moonshot.cn', 'qwen.ai', 'zhipuai.cn', 'minimax.chat'
+      ];
+
+      let addedCount = 0;
+      aiDomains.forEach(dom => {
+        const exists = currentRules.some(r => r.payload && r.payload.toLowerCase() === dom.toLowerCase());
+        if (!exists) {
+          currentRules.unshift({
+            raw: `DOMAIN-SUFFIX,${dom},节点选择`,
+            type: 'DOMAIN-SUFFIX',
+            payload: dom,
+            target: '节点选择'
+          });
+          addedCount++;
+        }
+      });
+
+      renderRulesList();
+      showToast(`🤖 成功补全 ${addedCount} 条 AI 核心分流规则！`, 'success');
+    }
+
+    async function saveRulesToServer() {
+      const uid = document.getElementById('subSelect').value;
+      if (!uid) return;
+
+      const btn = document.getElementById('saveRulesBtn');
+      const btnText = document.getElementById('saveRulesBtnText');
+      const spinner = document.getElementById('rulesSpinner');
+
+      btn.style.pointerEvents = 'none';
+      btn.style.opacity = '0.8';
+      spinner.style.display = 'inline-block';
+      btnText.textContent = '正在保存规则与快照备份...';
+
+      try {
+        const payload = {
+          uid: uid,
+          rules: currentRules.map(r => r.raw || `${r.type},${r.payload},${r.target}`)
+        };
+
+        const res = await fetch('/api/save-rules', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload)
+        });
+        const data = await res.json();
+
+        if (data.success) {
+          launchConfetti();
+          closeRulesModal();
+          openSuccessModal({
+            groupName: '分流规则集 (共' + data.total_rules + '条)',
+            nodeCount: data.total_rules,
+            groupType: '前置规则覆写 (prepend)'
+          });
+          showToast(`🎉 ${data.message}！请在 Verge 右键『重新加载』生效`, 'success');
+        } else {
+          showToast(`❌ 保存规则失败: ${data.error}`, 'error');
+        }
+      } catch (err) {
+        showToast('❌ 网络错误，保存规则失败', 'error');
+      } finally {
+        btn.style.pointerEvents = 'auto';
+        btn.style.opacity = '1';
+        spinner.style.display = 'none';
+        btnText.textContent = '💾 保存规则并同步至 Clash Verge';
+      }
+    }
+
     // 成功模态框控制
     function openSuccessModal(info) {
       document.getElementById('modalGroupName').textContent = info.groupName;
@@ -1168,9 +1746,12 @@
       }
     }
 
-    // 监听 ESC 键关闭模态框
+    // 监听 ESC 键关闭所有模态框
     window.addEventListener('keydown', (e) => {
-      if (e.key === 'Escape') closeSuccessModal();
+      if (e.key === 'Escape') {
+        closeSuccessModal();
+        closeRulesModal();
+      }
     });
 
     // 纯原生 Canvas 炫彩五彩纸屑庆祝动效
@@ -1239,7 +1820,7 @@
       const icon = document.getElementById('toastIcon');
       const text = document.getElementById('toastMsg');
       text.textContent = msg;
-      icon.textContent = type === 'success' ? '✅' : (type === 'warning' ? '⚠️' : '❌');
+      icon.textContent = type === 'success' ? '✅' : (type === 'warning' ? '⚠️' : (type === 'info' ? 'ℹ️' : '❌'));
       t.classList.add('show');
       setTimeout(() => t.classList.remove('show'), 5000);
     }

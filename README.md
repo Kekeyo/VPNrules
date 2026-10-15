@@ -50,6 +50,16 @@
 
 ![Success Animation Modal](docs/images/05_success_animation_modal.png)
 
+### ⚙️ 前置分流规则与黄金模板中心 (实时搜索与自动增添)
+> 点击顶栏红框右侧按钮直达规则配置大厅，支持按域名实时搜索、自动增添规则、一键补全全套 65 条 AI 规则底座，并秒级同步。
+
+![Rules Management Center](docs/images/06_rules_management_center.png)
+
+### 🇯🇵 优质节点 100% 精确读取与全量回显
+> 彻底解决节点漏读问题，精准解析订阅中已配置的 23 个原装优质专线节点，勾选状态与数量实时一致。
+
+![Japan Nodes 23 Fixed](docs/images/07_japan_nodes_23_fixed.png)
+
 ---
 
 ## 🚀 极简使用方式 (3 步上手)
