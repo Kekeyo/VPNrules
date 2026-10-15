@@ -69,83 +69,99 @@
       --pill-hover: #cbd5e1;
     }
 
-    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html, body {
+      height: 100vh;
+      overflow: hidden;
+    }
     body {
       font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "PingFang SC", "Microsoft YaHei", sans-serif;
       background: var(--bg-gradient);
       color: var(--text);
-      min-height: 100vh;
-      padding: 18px 26px;
+      padding: 0;
+      margin: 0;
       display: flex;
       flex-direction: column;
-      gap: 14px;
+      gap: 12px;
       transition: background 0.3s ease, color 0.3s ease;
     }
 
-    /* 顶部导航：左右独立卡片浮动分离，彻底消除死板长框 */
+    /* 顶部导航：参考高品质仪表盘，通栏吸顶固定，不随页面滑动下拉 */
     header {
-      background: transparent;
-      border: none;
-      box-shadow: none;
-      padding: 0;
+      flex-shrink: 0;
+      margin: 14px 26px 0 26px;
+      max-width: 1720px;
+      width: calc(100% - 52px);
+      align-self: center;
+      z-index: 500;
+      background: var(--bg-header);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 10px 20px;
       display: flex;
       justify-content: space-between;
       align-items: center;
       gap: 16px;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
       transition: all 0.3s ease;
     }
     .brand {
       display: flex;
       align-items: center;
-      gap: 10px;
-      background: var(--bg-header);
-      backdrop-filter: blur(16px);
-      border: 1px solid var(--border);
-      border-radius: 12px;
-      padding: 8px 16px;
-      box-shadow: var(--header-shadow);
-      transition: all 0.3s ease;
+      gap: 12px;
       user-select: none;
     }
     .brand-icon {
-      font-size: 15px;
-      background: rgba(6, 182, 212, 0.12);
-      border: 1px solid rgba(6, 182, 212, 0.25);
-      color: var(--primary);
-      width: 28px;
-      height: 28px;
+      font-size: 18px;
+      background: linear-gradient(135deg, #06b6d4, #3b82f6);
+      color: #ffffff;
+      width: 36px;
+      height: 36px;
       display: flex;
       align-items: center;
       justify-content: center;
-      border-radius: 7px;
-      transition: all 0.2s ease;
+      border-radius: 9px;
+      box-shadow: 0 0 14px rgba(6, 182, 212, 0.35);
       flex-shrink: 0;
     }
-    html[data-theme="dark"] .brand-icon {
-      background: rgba(6, 182, 212, 0.16);
-      border-color: rgba(6, 182, 212, 0.35);
-      color: #38bdf8;
+    .brand-text-wrap {
+      display: flex;
+      flex-direction: column;
+      gap: 3px;
+    }
+    .brand-title-row {
+      display: flex;
+      align-items: center;
+      gap: 8px;
     }
     .brand-title {
-      font-size: 14.5px;
+      font-size: 16px;
       font-weight: 700;
-      letter-spacing: 0.4px;
+      letter-spacing: 0.3px;
       color: var(--text);
-      line-height: 1;
-      white-space: nowrap;
+      line-height: 1.2;
+    }
+    .brand-badge {
+      background: linear-gradient(135deg, #0284c7, #4f46e5);
+      color: #ffffff;
+      font-size: 11px;
+      font-weight: 700;
+      padding: 1.5px 7px;
+      border-radius: 10px;
+      letter-spacing: 0.2px;
+      box-shadow: 0 2px 6px rgba(2, 132, 199, 0.25);
+    }
+    .brand-subtitle {
+      font-size: 11.5px;
+      color: var(--text-muted);
+      line-height: 1.25;
     }
 
     .top-controls {
       display: flex;
       align-items: center;
       gap: 10px;
-      background: var(--bg-header);
-      backdrop-filter: blur(16px);
-      border: 1px solid var(--border);
-      border-radius: 12px;
-      padding: 8px 16px;
-      box-shadow: var(--header-shadow);
-      transition: all 0.3s ease;
     }
     .sub-selector {
       display: flex;
@@ -201,14 +217,28 @@
       font-size: 14px;
     }
 
-    /* 主体全宽布局 (与顶栏亲密靠紧) */
+    /* 主体全宽布局：独立纵向自然滚动区 */
     main {
-      max-width: 1720px;
-      margin: 0 auto;
-      padding: 0;
-      display: block;
-      width: 100%;
       flex: 1;
+      overflow-y: auto;
+      max-width: 1720px;
+      width: calc(100% - 52px);
+      margin: 0 auto;
+      padding: 0 4px 26px 4px;
+      display: block;
+    }
+    main::-webkit-scrollbar {
+      width: 6px;
+    }
+    main::-webkit-scrollbar-track {
+      background: transparent;
+    }
+    main::-webkit-scrollbar-thumb {
+      background: var(--border);
+      border-radius: 4px;
+    }
+    main::-webkit-scrollbar-thumb:hover {
+      background: var(--text-muted);
     }
 
     /* 左侧控制栏 */
@@ -1159,26 +1189,26 @@
       opacity: 1;
     }
 
-    /* 顶栏规则中心按钮 */
+    /* 顶栏规则中心按钮 (参考仪表盘主动作胶囊) */
     .rules-toggle-btn {
-      background: var(--bg-surface);
-      border: 1px solid var(--border-active);
-      color: var(--primary);
-      padding: 4px 10px;
-      border-radius: 6px;
+      background: linear-gradient(135deg, #0284c7, #4f46e5);
+      border: 1px solid rgba(79, 70, 229, 0.35);
+      color: #ffffff;
+      padding: 5px 12px;
+      border-radius: 7px;
       cursor: pointer;
       display: flex;
       align-items: center;
-      gap: 4px;
+      gap: 5px;
       font-size: 12px;
       font-weight: 600;
       transition: all 0.2s;
-      box-shadow: 0 1px 6px rgba(6,182,212,0.15);
+      box-shadow: 0 2px 8px rgba(79, 70, 229, 0.25);
     }
     .rules-toggle-btn:hover {
-      background: rgba(6, 182, 212, 0.1);
+      background: linear-gradient(135deg, #0369a1, #4338ca);
       transform: translateY(-1px);
-      box-shadow: 0 4px 15px rgba(6,182,212,0.3);
+      box-shadow: 0 4px 14px rgba(79, 70, 229, 0.4);
     }
 
     /* 规则中心大模态框 */
@@ -1760,7 +1790,13 @@
   <header>
     <div class="brand">
       <div class="brand-icon">🌐</div>
-      <div class="brand-title">Verge 节点重组</div>
+      <div class="brand-text-wrap">
+        <div class="brand-title-row">
+          <span class="brand-title">Verge 节点重组</span>
+          <span class="brand-badge">v1.2 极速版</span>
+        </div>
+        <div class="brand-subtitle">Clash Verge 订阅节点可视化自由编排 · 自定义分组 · 前置智能分流无缝注入</div>
+      </div>
     </div>
     <div class="top-controls">
       <div class="sub-selector">
@@ -2261,6 +2297,15 @@
 
         updateCountDisplay();
         renderNodes();
+
+        // 支持滚动测试：向下滚动以验证顶栏固化不随滑动下拉
+        const urlParams = new URLSearchParams(window.location.search);
+        if (urlParams.get('scroll_test')) {
+          setTimeout(() => {
+            const m = document.querySelector('main');
+            if (m) m.scrollTop = 420;
+          }, 300);
+        }
       } catch (err) {
         showToast('❌ 读取节点列表失败', 'error');
       }
