@@ -956,6 +956,307 @@
     .btn-cancel:hover {
       background: var(--pill-hover);
     }
+
+    /* 顶栏新手教程按钮 */
+    .tutorial-toggle-btn {
+      background: rgba(16, 185, 129, 0.15);
+      border: 1px solid rgba(16, 185, 129, 0.4);
+      color: #10b981;
+      border-radius: 8px;
+      padding: 8px 14px;
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      transition: all 0.2s;
+    }
+    .tutorial-toggle-btn:hover {
+      background: rgba(16, 185, 129, 0.25);
+      box-shadow: 0 0 12px rgba(16, 185, 129, 0.3);
+      transform: translateY(-1px);
+    }
+
+    /* 侧边栏高级偏好折叠框 (默认闭合，还用户极致清爽) */
+    .sidebar-details {
+      background: var(--switch-bg);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 8px 12px;
+      font-size: 12px;
+      color: var(--text-muted);
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .sidebar-details[open] {
+      padding: 12px;
+    }
+    .sidebar-details summary {
+      outline: none;
+      user-select: none;
+      font-weight: 600;
+      color: var(--text-muted);
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .sidebar-details summary:hover {
+      color: var(--text);
+    }
+    .sidebar-details-content {
+      margin-top: 10px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      cursor: default;
+    }
+
+    /* 新手保姆级 3 步教程横幅 */
+    .guide-banner {
+      background: linear-gradient(135deg, rgba(6, 182, 212, 0.08), rgba(139, 92, 246, 0.08));
+      border: 1px solid rgba(6, 182, 212, 0.3);
+      border-radius: 12px;
+      padding: 12px 18px;
+      margin-bottom: 16px;
+      transition: all 0.3s;
+    }
+    .guide-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 10px;
+    }
+    .guide-header-left {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .guide-badge {
+      background: linear-gradient(135deg, var(--primary), var(--accent));
+      color: #fff;
+      font-size: 11px;
+      font-weight: 700;
+      padding: 2px 8px;
+      border-radius: 4px;
+    }
+    .guide-title {
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--text);
+    }
+    .guide-close-btn {
+      background: none;
+      border: none;
+      color: var(--text-muted);
+      font-size: 12px;
+      cursor: pointer;
+      padding: 3px 8px;
+      border-radius: 4px;
+      transition: all 0.2s;
+    }
+    .guide-close-btn:hover {
+      background: var(--pill-hover);
+      color: var(--text);
+    }
+    .guide-steps {
+      display: grid;
+      grid-template-columns: 1fr auto 1fr auto 1fr;
+      align-items: center;
+      gap: 10px;
+    }
+    .guide-step-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 10px 12px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .step-num {
+      width: 24px;
+      height: 24px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--primary), var(--accent));
+      color: #fff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 800;
+      font-size: 12px;
+      flex-shrink: 0;
+    }
+    .step-content {
+      min-width: 0;
+    }
+    .step-title {
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--text);
+      margin-bottom: 2px;
+    }
+    .step-desc {
+      font-size: 11px;
+      color: var(--text-muted);
+      line-height: 1.35;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .guide-step-arrow {
+      color: var(--text-muted);
+      font-size: 13px;
+      opacity: 0.5;
+    }
+
+    /* 新手保姆级教程弹窗 */
+    .tutorial-modal-card {
+      max-width: 660px !important;
+      width: 90% !important;
+      max-height: 90vh;
+      overflow-y: auto;
+      background: #111827 !important;
+      border: 1px solid var(--border-active) !important;
+      border-radius: 16px;
+      padding: 28px !important;
+      box-shadow: 0 25px 60px rgba(0,0,0,0.7), 0 0 35px rgba(16, 185, 129, 0.25) !important;
+      text-align: left !important;
+      align-items: stretch !important;
+      display: flex;
+      flex-direction: column;
+    }
+    html[data-theme="light"] .tutorial-modal-card {
+      background: #ffffff !important;
+      border-color: var(--primary) !important;
+      box-shadow: 0 20px 50px rgba(0,0,0,0.12), 0 0 25px rgba(16, 185, 129, 0.2) !important;
+    }
+    .tutorial-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      border-bottom: 1px solid var(--border);
+      padding-bottom: 14px;
+      margin-bottom: 16px;
+    }
+    .tutorial-badge {
+      width: 36px;
+      height: 36px;
+      border-radius: 10px;
+      background: rgba(16, 185, 129, 0.15);
+      color: #10b981;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 20px;
+    }
+    .tutorial-title {
+      font-size: 16px;
+      font-weight: 700;
+      color: var(--text);
+    }
+    .tutorial-subtitle {
+      font-size: 12px;
+      color: var(--text-muted);
+      margin-top: 2px;
+    }
+    .tutorial-body {
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+    .tutorial-step-row {
+      display: flex;
+      gap: 14px;
+      background: var(--switch-bg);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 14px;
+      align-items: flex-start;
+    }
+    .tutorial-step-badge {
+      background: linear-gradient(135deg, var(--primary), var(--accent));
+      color: #fff;
+      font-size: 12px;
+      font-weight: 700;
+      padding: 4px 10px;
+      border-radius: 6px;
+      white-space: nowrap;
+      flex-shrink: 0;
+    }
+    .tutorial-step-detail h4 {
+      font-size: 14px;
+      color: var(--text);
+      margin: 0 0 4px 0;
+      font-weight: 700;
+    }
+    .tutorial-step-detail p {
+      font-size: 12px;
+      color: var(--text-muted);
+      margin: 0;
+      line-height: 1.6;
+    }
+    .tutorial-step-detail b {
+      color: var(--text);
+    }
+    .tutorial-perks-box {
+      background: rgba(6, 182, 212, 0.08);
+      border: 1px dashed var(--primary);
+      border-radius: 10px;
+      padding: 12px 14px;
+    }
+    .perks-title {
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--primary);
+      margin-bottom: 6px;
+    }
+    .tutorial-perks-box ul {
+      margin: 0;
+      padding-left: 18px;
+      font-size: 11px;
+      color: var(--text-muted);
+      line-height: 1.6;
+    }
+    .tutorial-footer {
+      margin-top: 18px;
+      display: flex;
+      justify-content: flex-end;
+    }
+    .btn-tutorial-gotit {
+      background: linear-gradient(135deg, var(--primary), var(--accent));
+      color: #fff;
+      border: none;
+      border-radius: 8px;
+      padding: 11px 24px;
+      font-size: 14px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all 0.2s;
+      box-shadow: 0 4px 15px rgba(6,182,212,0.4);
+    }
+    .btn-tutorial-gotit:hover {
+      opacity: 0.95;
+      transform: translateY(-1px);
+    }
+
+    /* 规则弹窗中的自定义新增展开按钮 */
+    .btn-toggle-add-rule {
+      background: var(--pill-bg);
+      border: 1px solid var(--border);
+      color: var(--text-muted);
+      border-radius: 6px;
+      padding: 6px 12px;
+      font-size: 12px;
+      cursor: pointer;
+      white-space: nowrap;
+      transition: all 0.2s;
+    }
+    .btn-toggle-add-rule:hover {
+      background: var(--pill-hover);
+      color: var(--text);
+      border-color: var(--primary);
+    }
   </style>
 </head>
 <body>
@@ -974,6 +1275,12 @@
         <select id="subSelect" onchange="loadNodes()"></select>
       </div>
 
+      <!-- 新手教程按钮 -->
+      <button class="tutorial-toggle-btn" id="tutorialToggleBtn" onclick="openTutorialModal()" title="查看小白上手保姆级操作教程">
+        <span style="font-size: 15px;">💡</span>
+        <span>新手教程</span>
+      </button>
+
       <!-- 规则与模板管理按钮 (红色框右侧点一下) -->
       <button class="rules-toggle-btn" id="rulesToggleBtn" onclick="openRulesModal()" title="设置与自定义当前订阅的前置分流规则与黄金模板">
         <span style="font-size: 15px;">⚡</span>
@@ -989,61 +1296,101 @@
   </header>
 
   <main>
-    <!-- 左侧控制栏 -->
+    <!-- 左侧控制栏 (极致极简，只留用户最核心操作) -->
     <aside class="sidebar">
-      <h2>⚙️ VIP 分组编排配置</h2>
+      <h2>✨ 专属 VIP 分组</h2>
 
       <!-- 已有分组快速回显栏 -->
       <div class="form-group" id="existingGroupsContainer" style="display: none;">
-        <label>📂 已有 VIP 分组（点击直接载入修改）：</label>
+        <label>📂 已有分组（点击载入）：</label>
         <div class="existing-pills" id="existingGroupsList" style="display: flex; flex-wrap: wrap; gap: 6px;"></div>
       </div>
 
+      <!-- 步骤 1：分组名称 -->
       <div class="form-group">
-        <label for="groupNameInput">自定义分组名称：</label>
-        <input type="text" id="groupNameInput" value="日本精选VIP" placeholder="例如：日本VIP专线、新加坡游戏池">
+        <label for="groupNameInput">🏷️ 分组名称：</label>
+        <input type="text" id="groupNameInput" value="日本节点" placeholder="例如：日本VIP专线、美日AI池">
       </div>
 
-      <div class="form-group">
-        <label>分组调度策略：</label>
-        <div class="radio-group">
-          <div class="radio-btn active" id="typeSelect" onclick="setGroupType('select')">手动选择 (select)</div>
-          <div class="radio-btn" id="typeUrlTest" onclick="setGroupType('url-test')">自动测速 (url-test)</div>
-        </div>
-      </div>
-
-      <div class="switches">
-        <label class="switch-item">
-          <input type="checkbox" id="mountSelector" checked>
-          <span>置顶挂载至『节点选择』总控台</span>
-        </label>
-        <label class="switch-item">
-          <input type="checkbox" id="cleanInfo" checked>
-          <span>自动过滤流量/套餐等非代理提示卡片</span>
-        </label>
-        <label class="switch-item">
-          <input type="checkbox" id="linkMedia" checked>
-          <span>将港台番剧与蒸汽平台接入总控</span>
-        </label>
-      </div>
-
+      <!-- 步骤 2：已选节点统计卡片 -->
       <div class="selected-summary">
         <span>当前已勾选节点：</span>
         <span class="selected-count" id="selectedCountDisplay">0</span>
       </div>
 
+      <!-- 步骤 3：核心一键写入 -->
       <button class="action-btn-main" id="saveBtn" onclick="saveAndApply()">
         <span class="spinner"></span>
         <span id="saveBtnText">🚀 一键生成并写入 Clash Verge</span>
       </button>
 
-      <div style="font-size: 11px; color: var(--text-muted); line-height: 1.5; background: var(--switch-bg); padding: 10px; border-radius: 6px; border: 1px solid var(--border);">
-        💡 提示：点击生成后，后台会自动更新覆写配置并在工作区自动备份。完成后在 Verge 订阅卡片上右键『重新加载』即生效！
-      </div>
+      <!-- 隐藏式高级选项 (默认全部为最佳实践，不打扰普通用户) -->
+      <details class="sidebar-details">
+        <summary>⚙️ 高级偏好设置（默认最佳）</summary>
+        <div class="sidebar-details-content">
+          <div class="form-group">
+            <label style="font-size: 11px;">调度策略：</label>
+            <div class="radio-group">
+              <div class="radio-btn active" id="typeSelect" onclick="setGroupType('select')">手动选择</div>
+              <div class="radio-btn" id="typeUrlTest" onclick="setGroupType('url-test')">自动测速</div>
+            </div>
+          </div>
+          <div class="switches" style="padding: 10px;">
+            <label class="switch-item" style="font-size: 12px;">
+              <input type="checkbox" id="mountSelector" checked>
+              <span>置顶挂载至『节点选择』</span>
+            </label>
+            <label class="switch-item" style="font-size: 12px;">
+              <input type="checkbox" id="cleanInfo" checked>
+              <span>自动过滤套餐/垃圾提示卡</span>
+            </label>
+            <label class="switch-item" style="font-size: 12px;">
+              <input type="checkbox" id="linkMedia" checked>
+              <span>将港台番剧与蒸汽接入总控</span>
+            </label>
+          </div>
+        </div>
+      </details>
     </aside>
 
     <!-- 右侧节点展示大厅 -->
     <section class="content-area">
+      <!-- 新手 3 步保姆级引导横幅 (初次访问展示，可点击掌握关闭) -->
+      <div class="guide-banner" id="guideBanner">
+        <div class="guide-header">
+          <div class="guide-header-left">
+            <span class="guide-badge">💡 快速入门</span>
+            <span class="guide-title">只需 3 步，轻松生成专属 VIP 专线与智能分流</span>
+          </div>
+          <button class="guide-close-btn" onclick="dismissGuide()" title="关闭新手横幅">✕ 我已掌握</button>
+        </div>
+        <div class="guide-steps">
+          <div class="guide-step-card">
+            <div class="step-num">1</div>
+            <div class="step-content">
+              <div class="step-title">勾选心仪节点</div>
+              <div class="step-desc">点下方地区（如 🇯🇵 日本），勾选想用的节点</div>
+            </div>
+          </div>
+          <div class="guide-step-arrow">➔</div>
+          <div class="guide-step-card">
+            <div class="step-num">2</div>
+            <div class="step-content">
+              <div class="step-title">确认分组名称</div>
+              <div class="step-desc">左侧起个好记的名字（默认已自动填好）</div>
+            </div>
+          </div>
+          <div class="guide-step-arrow">➔</div>
+          <div class="guide-step-card">
+            <div class="step-num">3</div>
+            <div class="step-content">
+              <div class="step-title">一键写入生效</div>
+              <div class="step-desc">点左侧【一键写入】，去 Verge 订阅右键刷新</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
       <div class="toolbar">
         <div class="search-row">
           <div class="search-box">
@@ -1140,8 +1487,8 @@
         <button class="rules-close-btn" onclick="closeRulesModal()">✕</button>
       </div>
 
-      <!-- 快速增添规则栏 (单排流线型布局，一整排无折行) -->
-      <div class="rules-add-bar">
+      <!-- 快速增添规则栏 (默认隐藏，仅在点击展开时显示) -->
+      <div class="rules-add-bar" id="rulesAddBar" style="display: none;">
         <select id="ruleTypeInput" class="rules-select-type">
           <option value="DOMAIN-SUFFIX">DOMAIN-SUFFIX (后缀)</option>
           <option value="DOMAIN-KEYWORD">DOMAIN-KEYWORD (关键词)</option>
@@ -1156,20 +1503,20 @@
           <option value="REJECT">⛔ REJECT (拦截阻断)</option>
         </select>
         <button class="btn-add-rule" onclick="addNewRule()">➕ 添加</button>
-        <button class="btn-preset-rule" onclick="loadDefaultAIRules()" title="一键补齐国内外 AI 黄金分流规则（海外走VIP节点，国内走DIRECT直连）">🤖 补齐 AI 规则</button>
       </div>
 
       <!-- 搜索与筛选工具栏 -->
       <div class="rules-search-bar">
         <div class="search-box" style="flex: 1;">
           <span class="search-icon">🔍</span>
-          <input type="text" id="ruleSearchInput" placeholder="实时搜索规则（如 openai, claude, google, gemini, direct 等）..." oninput="renderRulesList()">
+          <input type="text" id="ruleSearchInput" placeholder="实时搜索规则（如 openai, claude, deepseek 等）..." oninput="renderRulesList()">
         </div>
         <div class="rules-filter-pills">
           <div class="pill active" id="rulePillAll" onclick="setRuleTargetFilter('ALL', this)">全部 (<span id="ruleCountAll">0</span>)</div>
           <div class="pill" id="rulePillSelector" onclick="setRuleTargetFilter('节点选择', this)">节点选择 (<span id="ruleCountSelector">0</span>)</div>
           <div class="pill" id="rulePillDirect" onclick="setRuleTargetFilter('DIRECT', this)">DIRECT直连 (<span id="ruleCountDirect">0</span>)</div>
         </div>
+        <button class="btn-toggle-add-rule" id="toggleAddRuleBtn" onclick="toggleAddRuleBar()" title="展开手动添加自定义规则输入框">➕ 手动加一条</button>
       </div>
 
       <!-- 规则卡片列表大厅 -->
@@ -1184,6 +1531,66 @@
           <span class="spinner" id="rulesSpinner"></span>
           <span id="saveRulesBtnText">💾 保存规则并同步至 Clash Verge</span>
         </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- 新手 3 步保姆级上手教程模态框 -->
+  <div class="modal-overlay" id="tutorialModal" onclick="handleTutorialOverlayClick(event)">
+    <div class="modal-card tutorial-modal-card">
+      <div class="tutorial-header">
+        <div style="display: flex; align-items: center; gap: 10px;">
+          <div class="tutorial-badge">💡</div>
+          <div>
+            <div class="tutorial-title">小白 3 步保姆级上手教程</div>
+            <div class="tutorial-subtitle">无需复杂配置，只需点 3 下，即可获得极致纯净的专属代理环境与智能分流</div>
+          </div>
+        </div>
+        <button class="rules-close-btn" onclick="closeTutorialModal()">✕</button>
+      </div>
+
+      <div class="tutorial-body">
+        <!-- 步骤 1 -->
+        <div class="tutorial-step-row">
+          <div class="tutorial-step-badge">第一步</div>
+          <div class="tutorial-step-detail">
+            <h4>🎯 挑选优质专线节点</h4>
+            <p>在页面右侧，点击你想要的地区标签（如 <b>🇯🇵 日本</b>、<b>🇺🇸 美国</b>、<b>🇭🇰 香港</b>）。然后勾选几个速度快、低延迟的优质专线节点。</p>
+          </div>
+        </div>
+
+        <!-- 步骤 2 -->
+        <div class="tutorial-step-row">
+          <div class="tutorial-step-badge">第二步</div>
+          <div class="tutorial-step-detail">
+            <h4>🏷️ 确认分组名称</h4>
+            <p>在左侧边栏，为这批节点确认一个清晰的分组名称（例如：<code>日本节点</code> 或 <code>美日AI专线</code>）。系统已为您自动填好默认名称，通常无需修改。</p>
+          </div>
+        </div>
+
+        <!-- 步骤 3 -->
+        <div class="tutorial-step-row">
+          <div class="tutorial-step-badge">第三步</div>
+          <div class="tutorial-step-detail">
+            <h4>🚀 一键写入并在 Clash Verge 刷新</h4>
+            <p>点击左侧醒目的 <b>【🚀 一键生成并写入 Clash Verge】</b> 按钮。<br>
+            写入完成后，回到 <b>Clash Verge</b> 客户端 ➔ 点击左侧 <b>「订阅」</b> ➔ 对当前订阅卡片 <b>右键点击「重新加载」</b>，即可 100% 立即生效！</p>
+          </div>
+        </div>
+
+        <!-- 额外加分特性说明卡片 -->
+        <div class="tutorial-perks-box">
+          <div class="perks-title">🎁 专属全自动黑科技（已帮您完全做好，无需操心）：</div>
+          <ul>
+            <li>✅ <b>海外 AI 专线</b>：ChatGPT、Claude、Gemini 等 36 个海外服务已自动锁定您的专属 VIP 专线，永不串流被封号。</li>
+            <li>✅ <b>国内 AI 直连</b>：DeepSeek、Kimi、通义千问、豆包等 12 个国内大模型已自动直连（DIRECT），零额外延迟，不浪费翻墙流量。</li>
+            <li>✅ <b>自动净化节点池</b>：自动剔除套餐剩余天数、流量提示等所有垃圾卡片。</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="tutorial-footer">
+        <button class="btn-tutorial-gotit" onclick="closeTutorialModal()">🚀 我学会了，立即去操作</button>
       </div>
     </div>
   </div>
@@ -1227,6 +1634,7 @@
     window.addEventListener('DOMContentLoaded', async () => {
       initTheme();
       await loadProfiles();
+      initGuide();
 
       const urlParams = new URLSearchParams(window.location.search);
       if (urlParams.get('test_modal')) {
@@ -1250,6 +1658,12 @@
               if (pill) setRuleTargetFilter(filter, pill);
             }, 250);
           }
+        }, 400);
+      }
+
+      if (urlParams.get('test_tutorial')) {
+        setTimeout(() => {
+          openTutorialModal();
         }, 400);
       }
     });
@@ -1810,11 +2224,60 @@
       }
     }
 
+    // 新手保姆级教程与引导逻辑
+    function initGuide() {
+      if (localStorage.getItem('vpnrules_guide_dismissed') === 'true') {
+        const gb = document.getElementById('guideBanner');
+        if (gb) gb.style.display = 'none';
+      }
+    }
+
+    function dismissGuide() {
+      const gb = document.getElementById('guideBanner');
+      if (gb) gb.style.display = 'none';
+      localStorage.setItem('vpnrules_guide_dismissed', 'true');
+      showToast('💡 教程横幅已收起，随时可点击顶栏【新手教程】再次查看！', 'info');
+    }
+
+    function openTutorialModal() {
+      const m = document.getElementById('tutorialModal');
+      if (m) m.classList.add('active');
+    }
+
+    function closeTutorialModal() {
+      const m = document.getElementById('tutorialModal');
+      if (m) m.classList.remove('active');
+    }
+
+    function handleTutorialOverlayClick(e) {
+      if (e.target.id === 'tutorialModal') {
+        closeTutorialModal();
+      }
+    }
+
+    function toggleAddRuleBar() {
+      const bar = document.getElementById('rulesAddBar');
+      const btn = document.getElementById('toggleAddRuleBtn');
+      if (!bar) return;
+      if (bar.style.display === 'none' || !bar.style.display) {
+        bar.style.display = 'flex';
+        btn.textContent = '✕ 收起输入栏';
+        btn.style.color = 'var(--primary)';
+        btn.style.borderColor = 'var(--primary)';
+      } else {
+        bar.style.display = 'none';
+        btn.textContent = '➕ 手动加一条';
+        btn.style.color = '';
+        btn.style.borderColor = '';
+      }
+    }
+
     // 监听 ESC 键关闭所有模态框
     window.addEventListener('keydown', (e) => {
       if (e.key === 'Escape') {
         closeSuccessModal();
         closeRulesModal();
+        closeTutorialModal();
       }
     });
 
