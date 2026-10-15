@@ -75,10 +75,10 @@
       background: var(--bg-gradient);
       color: var(--text);
       min-height: 100vh;
-      padding: 10px 16px;
+      padding: 13px 20px;
       display: flex;
       flex-direction: column;
-      gap: 8px;
+      gap: 10px;
       transition: background 0.3s ease, color 0.3s ease;
     }
 
@@ -87,8 +87,8 @@
       background: var(--bg-header);
       backdrop-filter: blur(16px);
       border: 1px solid var(--border);
-      border-radius: 9px;
-      padding: 7px 14px;
+      border-radius: 10px;
+      padding: 8px 16px;
       display: flex;
       justify-content: space-between;
       align-items: center;
@@ -489,11 +489,11 @@
       box-shadow: 0 6px 25px rgba(16, 185, 129, 0.6);
     }
 
-    /* 右侧卡片区：紧密靠紧 */
+    /* 右侧卡片区：舒适呼吸感 */
     .content-area {
       display: flex;
       flex-direction: column;
-      gap: 8px;
+      gap: 10px;
     }
 
     .toolbar {
@@ -502,17 +502,17 @@
       background: var(--bg-toolbar);
       backdrop-filter: blur(12px);
       border: 1px solid var(--border);
-      border-radius: 9px;
-      padding: 8px 12px;
+      border-radius: 10px;
+      padding: 10px 16px;
       display: flex;
       flex-direction: column;
-      gap: 7px;
+      gap: 9px;
       box-shadow: var(--header-shadow);
       transition: all 0.3s ease;
     }
     .search-row {
       display: flex;
-      gap: 8px;
+      gap: 10px;
       align-items: center;
     }
     .search-box {
@@ -521,60 +521,273 @@
     }
     .search-box input {
       width: 100%;
-      padding: 6px 10px 6px 30px;
-      font-size: 12.5px;
-      border-radius: 6px;
+      padding: 7px 12px 7px 34px;
+      font-size: 13px;
+      border-radius: 7px;
     }
     .search-icon {
       position: absolute;
-      left: 10px;
+      left: 11px;
       top: 50%;
       transform: translateY(-50%);
       color: var(--text-muted);
-      font-size: 12px;
+      font-size: 13px;
     }
 
     .filter-pills {
       display: flex;
       flex-wrap: wrap;
-      gap: 5px;
+      gap: 6px;
       align-items: center;
     }
     .pill {
       background: var(--pill-bg);
       border: 1px solid var(--border);
       color: var(--text);
-      padding: 3.5px 10px;
-      border-radius: 14px;
-      font-size: 11.5px;
+      padding: 4px 12px;
+      border-radius: 16px;
+      font-size: 12px;
+      font-weight: 600;
       cursor: pointer;
-      transition: all 0.2s;
+      transition: all 0.18s ease;
       user-select: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
     }
     .pill:hover {
-      background: var(--pill-hover);
-      border-color: var(--text-muted);
+      transform: translateY(-1px);
     }
-    .pill.active {
-      background: var(--primary);
-      color: #fff;
-      font-weight: 700;
-      border-color: var(--primary);
-      box-shadow: 0 0 8px rgba(6,182,212,0.4);
+
+    /* 地区药丸色彩与下方卡片微徽章 100% 对应 */
+    /* 全部地区 */
+    .pill.pill-all {
+      background: #f1f5f9;
+      color: #334155;
+      border-color: #cbd5e1;
+    }
+    .pill.pill-all.active {
+      background: linear-gradient(135deg, #06b6d4, #0891b2);
+      color: #ffffff;
+      border-color: #0891b2;
+      box-shadow: 0 0 10px rgba(6, 182, 212, 0.4);
+    }
+    html[data-theme="dark"] .pill.pill-all {
+      background: rgba(30, 41, 59, 0.8);
+      color: #cbd5e1;
+      border-color: #334155;
+    }
+    html[data-theme="dark"] .pill.pill-all.active {
+      background: linear-gradient(135deg, #06b6d4, #0891b2);
+      color: #ffffff;
+      border-color: #06b6d4;
+      box-shadow: 0 0 12px rgba(6, 182, 212, 0.45);
+    }
+
+    /* 日本 JP (玫红) */
+    .pill.pill-jp {
+      background: #fff1f2;
+      color: #e11d48;
+      border-color: #ffe4e6;
+    }
+    .pill.pill-jp:hover {
+      background: #ffe4e6;
+      border-color: #fda4af;
+    }
+    .pill.pill-jp.active {
+      background: linear-gradient(135deg, #f43f5e, #e11d48);
+      color: #ffffff;
+      border-color: #e11d48;
+      box-shadow: 0 0 10px rgba(225, 29, 72, 0.4);
+    }
+    html[data-theme="dark"] .pill.pill-jp {
+      background: rgba(244, 63, 94, 0.14);
+      color: #fb7185;
+      border-color: rgba(244, 63, 94, 0.3);
+    }
+    html[data-theme="dark"] .pill.pill-jp:hover {
+      background: rgba(244, 63, 94, 0.22);
+      border-color: rgba(244, 63, 94, 0.45);
+    }
+    html[data-theme="dark"] .pill.pill-jp.active {
+      background: linear-gradient(135deg, #f43f5e, #be123c);
+      color: #ffffff;
+      border-color: #f43f5e;
+      box-shadow: 0 0 12px rgba(244, 63, 94, 0.45);
+    }
+
+    /* 新加坡 SG (翠绿) */
+    .pill.pill-sg {
+      background: #ecfdf5;
+      color: #059669;
+      border-color: #d1fae5;
+    }
+    .pill.pill-sg:hover {
+      background: #d1fae5;
+      border-color: #a7f3d0;
+    }
+    .pill.pill-sg.active {
+      background: linear-gradient(135deg, #10b981, #059669);
+      color: #ffffff;
+      border-color: #059669;
+      box-shadow: 0 0 10px rgba(5, 150, 105, 0.4);
+    }
+    html[data-theme="dark"] .pill.pill-sg {
+      background: rgba(16, 185, 129, 0.14);
+      color: #6ee7b7;
+      border-color: rgba(16, 185, 129, 0.3);
+    }
+    html[data-theme="dark"] .pill.pill-sg:hover {
+      background: rgba(16, 185, 129, 0.22);
+      border-color: rgba(16, 185, 129, 0.45);
+    }
+    html[data-theme="dark"] .pill.pill-sg.active {
+      background: linear-gradient(135deg, #10b981, #047857);
+      color: #ffffff;
+      border-color: #10b981;
+      box-shadow: 0 0 12px rgba(16, 185, 129, 0.45);
+    }
+
+    /* 美国 US (晴空蓝) */
+    .pill.pill-us {
+      background: #f0f9ff;
+      color: #0284c7;
+      border-color: #e0f2fe;
+    }
+    .pill.pill-us:hover {
+      background: #e0f2fe;
+      border-color: #bae6fd;
+    }
+    .pill.pill-us.active {
+      background: linear-gradient(135deg, #0ea5e9, #0284c7);
+      color: #ffffff;
+      border-color: #0284c7;
+      box-shadow: 0 0 10px rgba(2, 132, 199, 0.4);
+    }
+    html[data-theme="dark"] .pill.pill-us {
+      background: rgba(14, 165, 233, 0.14);
+      color: #7dd3fc;
+      border-color: rgba(14, 165, 233, 0.3);
+    }
+    html[data-theme="dark"] .pill.pill-us:hover {
+      background: rgba(14, 165, 233, 0.22);
+      border-color: rgba(14, 165, 233, 0.45);
+    }
+    html[data-theme="dark"] .pill.pill-us.active {
+      background: linear-gradient(135deg, #0ea5e9, #0369a1);
+      color: #ffffff;
+      border-color: #0ea5e9;
+      box-shadow: 0 0 12px rgba(14, 165, 233, 0.45);
+    }
+
+    /* 香港 HK (经典靛蓝/紫) */
+    .pill.pill-hk {
+      background: #eef2ff;
+      color: #4f46e5;
+      border-color: #e0e7ff;
+    }
+    .pill.pill-hk:hover {
+      background: #e0e7ff;
+      border-color: #c7d2fe;
+    }
+    .pill.pill-hk.active {
+      background: linear-gradient(135deg, #6366f1, #4f46e5);
+      color: #ffffff;
+      border-color: #4f46e5;
+      box-shadow: 0 0 10px rgba(79, 70, 229, 0.4);
+    }
+    html[data-theme="dark"] .pill.pill-hk {
+      background: rgba(99, 102, 241, 0.14);
+      color: #a5b4fc;
+      border-color: rgba(99, 102, 241, 0.3);
+    }
+    html[data-theme="dark"] .pill.pill-hk:hover {
+      background: rgba(99, 102, 241, 0.22);
+      border-color: rgba(99, 102, 241, 0.45);
+    }
+    html[data-theme="dark"] .pill.pill-hk.active {
+      background: linear-gradient(135deg, #6366f1, #4338ca);
+      color: #ffffff;
+      border-color: #6366f1;
+      box-shadow: 0 0 12px rgba(99, 102, 241, 0.45);
+    }
+
+    /* 台湾 TW (暖阳琥珀橙) */
+    .pill.pill-tw {
+      background: #fffbeb;
+      color: #d97706;
+      border-color: #fef3c7;
+    }
+    .pill.pill-tw:hover {
+      background: #fef3c7;
+      border-color: #fde68a;
+    }
+    .pill.pill-tw.active {
+      background: linear-gradient(135deg, #f59e0b, #d97706);
+      color: #ffffff;
+      border-color: #d97706;
+      box-shadow: 0 0 10px rgba(217, 119, 6, 0.4);
+    }
+    html[data-theme="dark"] .pill.pill-tw {
+      background: rgba(245, 158, 11, 0.14);
+      color: #fcd34d;
+      border-color: rgba(245, 158, 11, 0.3);
+    }
+    html[data-theme="dark"] .pill.pill-tw:hover {
+      background: rgba(245, 158, 11, 0.22);
+      border-color: rgba(245, 158, 11, 0.45);
+    }
+    html[data-theme="dark"] .pill.pill-tw.active {
+      background: linear-gradient(135deg, #f59e0b, #b45309);
+      color: #ffffff;
+      border-color: #f59e0b;
+      box-shadow: 0 0 12px rgba(245, 158, 11, 0.45);
+    }
+
+    /* 韩国 KR (梦幻紫) */
+    .pill.pill-kr {
+      background: #faf5ff;
+      color: #9333ea;
+      border-color: #f3e8ff;
+    }
+    .pill.pill-kr:hover {
+      background: #f3e8ff;
+      border-color: #e9d5ff;
+    }
+    .pill.pill-kr.active {
+      background: linear-gradient(135deg, #a855f7, #9333ea);
+      color: #ffffff;
+      border-color: #9333ea;
+      box-shadow: 0 0 10px rgba(147, 51, 234, 0.4);
+    }
+    html[data-theme="dark"] .pill.pill-kr {
+      background: rgba(168, 85, 247, 0.14);
+      color: #d8b4fe;
+      border-color: rgba(168, 85, 247, 0.3);
+    }
+    html[data-theme="dark"] .pill.pill-kr:hover {
+      background: rgba(168, 85, 247, 0.22);
+      border-color: rgba(168, 85, 247, 0.45);
+    }
+    html[data-theme="dark"] .pill.pill-kr.active {
+      background: linear-gradient(135deg, #a855f7, #7e22ce);
+      color: #ffffff;
+      border-color: #a855f7;
+      box-shadow: 0 0 12px rgba(168, 85, 247, 0.45);
     }
 
     .quick-actions {
       display: flex;
-      gap: 5px;
+      gap: 6px;
       margin-left: auto;
     }
     .btn-sm {
       background: var(--pill-bg);
       border: 1px solid var(--border);
       color: var(--text);
-      padding: 4px 9px;
-      border-radius: 5px;
-      font-size: 11px;
+      padding: 5px 10px;
+      border-radius: 6px;
+      font-size: 11.5px;
       cursor: pointer;
       transition: all 0.2s;
     }
@@ -750,18 +963,18 @@
       background: var(--bg-card);
       border: 1px solid var(--border-card);
       border-left: 3.5px solid transparent;
-      border-radius: 9px;
-      padding: 9px 11px;
+      border-radius: 10px;
+      padding: 11px 13px;
       display: flex;
       align-items: center;
-      gap: 9px;
+      gap: 10px;
       cursor: pointer;
       transition: all 0.16s ease;
       user-select: none;
       position: relative;
       overflow: hidden;
       box-shadow: var(--card-shadow);
-      min-height: 54px;
+      min-height: 58px;
     }
     .node-card:hover {
       background: var(--bg-card-hover);
@@ -842,14 +1055,14 @@
       min-width: 0;
     }
     .node-name {
-      font-size: 12px;
+      font-size: 12.5px;
       font-weight: 600;
       white-space: nowrap;
       overflow: hidden;
       text-overflow: ellipsis;
       color: var(--node-name-color);
       letter-spacing: 0.1px;
-      line-height: 1.3;
+      line-height: 1.35;
     }
     .node-card.selected .node-name {
       color: var(--primary);
@@ -859,18 +1072,18 @@
     }
     .node-tags {
       display: flex;
-      gap: 4px;
-      margin-top: 3px;
+      gap: 5px;
+      margin-top: 4px;
       flex-wrap: wrap;
     }
     .badge {
-      font-size: 9.5px;
-      padding: 1.5px 5.5px;
+      font-size: 10px;
+      padding: 2px 6px;
       border-radius: 4px;
       background: rgba(148, 163, 184, 0.12);
       color: var(--text-muted);
       border: 1px solid rgba(148, 163, 184, 0.2);
-      line-height: 1.2;
+      line-height: 1.25;
       font-weight: 500;
     }
     .badge.iepl {
@@ -1618,14 +1831,14 @@
 
         <div class="toolbar-bottom-row">
           <div class="filter-pills">
-            <span style="font-size: 12px; color: var(--text-muted);">地区筛选：</span>
-            <div class="pill active" onclick="setRegionFilter('ALL', this)">全部地区</div>
-            <div class="pill" onclick="setRegionFilter('JP', this)">🇯🇵 日本</div>
-            <div class="pill" onclick="setRegionFilter('SG', this)">🇸🇬 新加坡</div>
-            <div class="pill" onclick="setRegionFilter('US', this)">🇺🇸 美国</div>
-            <div class="pill" onclick="setRegionFilter('HK', this)">🇭🇰 香港</div>
-            <div class="pill" onclick="setRegionFilter('TW', this)">🇹🇼 台湾</div>
-            <div class="pill" onclick="setRegionFilter('KR', this)">🇰🇷 韩国</div>
+            <span style="font-size: 12px; color: var(--text-muted); font-weight: 600;">地区筛选：</span>
+            <div class="pill pill-all active" onclick="setRegionFilter('ALL', this)">全部地区</div>
+            <div class="pill pill-jp" onclick="setRegionFilter('JP', this)">🇯🇵 日本</div>
+            <div class="pill pill-sg" onclick="setRegionFilter('SG', this)">🇸🇬 新加坡</div>
+            <div class="pill pill-us" onclick="setRegionFilter('US', this)">🇺🇸 美国</div>
+            <div class="pill pill-hk" onclick="setRegionFilter('HK', this)">🇭🇰 香港</div>
+            <div class="pill pill-tw" onclick="setRegionFilter('TW', this)">🇹🇼 台湾</div>
+            <div class="pill pill-kr" onclick="setRegionFilter('KR', this)">🇰🇷 韩国</div>
           </div>
 
           <!-- 位置 2：折叠式 VIP 分组与一键写入控制台 (点开往下显示) -->
