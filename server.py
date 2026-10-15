@@ -133,8 +133,8 @@ def get_profile_nodes(profile_file_name: str):
         n = m[1].strip()
         if n and n not in seen:
             seen.add(n)
-            is_info = bool(re.search(r"(剩余流量|套餐到期|重置|官网|群组)", n))
-            reg = guess_region(n)
+            is_info = bool(re.search(r"(剩余流量|套餐到期|重置|官网|群组|距离下次)", n))
+            reg = {"code": "INFO", "flag": "📊", "name": "提示"} if is_info else guess_region(n)
             tags = guess_tags(n)
             nodes.append({
                 "name": n,
@@ -149,8 +149,8 @@ def get_profile_nodes(profile_file_name: str):
             n = m[1].strip()
             if n and n not in seen:
                 seen.add(n)
-                is_info = bool(re.search(r"(剩余流量|套餐到期|重置|官网|群组)", n))
-                reg = guess_region(n)
+                is_info = bool(re.search(r"(剩余流量|套餐到期|重置|官网|群组|距离下次)", n))
+                reg = {"code": "INFO", "flag": "📊", "name": "提示"} if is_info else guess_region(n)
                 tags = guess_tags(n)
                 nodes.append({
                     "name": n,
