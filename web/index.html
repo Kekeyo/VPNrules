@@ -171,13 +171,14 @@
       font-size: 16px;
     }
 
-    /* 主体双栏 */
+    /* 主体全宽布局 (空间全量留给节点展示) */
     main {
-      display: grid;
-      grid-template-columns: 360px 1fr;
-      gap: 24px;
+      max-width: 1720px;
+      margin: 0 auto;
+      padding: 20px 24px;
+      display: block;
+      width: 100%;
       flex: 1;
-      align-items: start;
     }
 
     /* 左侧控制栏 */
@@ -484,6 +485,8 @@
     }
 
     .toolbar {
+      position: relative;
+      z-index: 100;
       background: var(--bg-toolbar);
       backdrop-filter: blur(12px);
       border: 1px solid var(--border);
@@ -563,6 +566,142 @@
     .btn-sm:hover {
       background: var(--pill-hover);
       border-color: var(--text-muted);
+    }
+
+    /* 工具栏第二排与位置 2 折叠式 VIP 分组控制台 */
+    .toolbar-bottom-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 16px;
+      flex-wrap: wrap;
+      position: relative;
+      z-index: 100;
+    }
+
+    .vip-group-dropdown-wrap {
+      position: relative;
+      z-index: 101;
+      display: flex;
+      align-items: center;
+    }
+    .vip-capsule-bar {
+      display: flex;
+      align-items: center;
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 3px 4px;
+      gap: 6px;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.12);
+      transition: all 0.2s;
+    }
+    .vip-capsule-bar:hover {
+      border-color: var(--primary);
+      box-shadow: 0 0 14px rgba(6, 182, 212, 0.25);
+    }
+    .vip-group-trigger {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 6px 12px;
+      border-radius: 7px;
+      cursor: pointer;
+      user-select: none;
+      transition: all 0.2s;
+    }
+    .vip-group-trigger:hover {
+      background: var(--pill-hover);
+    }
+    .vip-trigger-icon {
+      font-size: 14px;
+    }
+    .vip-trigger-name {
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--text);
+      max-width: 140px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .vip-trigger-badge {
+      background: rgba(6, 182, 212, 0.2);
+      color: var(--primary);
+      border: 1px solid rgba(6, 182, 212, 0.4);
+      border-radius: 12px;
+      font-size: 11px;
+      font-weight: 800;
+      padding: 1px 7px;
+    }
+    .vip-trigger-arrow {
+      font-size: 11px;
+      color: var(--text-muted);
+      transition: transform 0.2s ease;
+    }
+    .vip-group-dropdown-wrap.open .vip-trigger-arrow {
+      transform: rotate(180deg);
+    }
+    .vip-quick-save-btn {
+      background: linear-gradient(135deg, var(--primary), var(--accent));
+      color: #fff;
+      border: none;
+      border-radius: 7px;
+      padding: 7px 16px;
+      font-size: 13px;
+      font-weight: 700;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      white-space: nowrap;
+      box-shadow: 0 2px 10px rgba(6,182,212,0.35);
+      transition: all 0.2s;
+    }
+    .vip-quick-save-btn:hover {
+      opacity: 0.95;
+      transform: translateY(-1px);
+      box-shadow: 0 4px 15px rgba(6,182,212,0.5);
+    }
+    .vip-dropdown-panel {
+      position: absolute;
+      top: calc(100% + 8px);
+      right: 0;
+      width: 380px;
+      background: #141f36;
+      border: 1px solid var(--border-active);
+      border-radius: 14px;
+      padding: 18px;
+      box-shadow: 0 15px 45px rgba(0,0,0,0.85), 0 0 30px rgba(6, 182, 212, 0.25);
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      z-index: 500;
+    }
+    html[data-theme="light"] .vip-dropdown-panel {
+      background: #ffffff;
+      box-shadow: 0 15px 35px rgba(0,0,0,0.15), 0 0 20px rgba(6, 182, 212, 0.2);
+    }
+    .dropdown-panel-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 1px solid var(--border);
+      padding-bottom: 8px;
+      margin-bottom: 4px;
+    }
+    .dropdown-close-btn {
+      background: none;
+      border: none;
+      color: var(--text-muted);
+      font-size: 14px;
+      cursor: pointer;
+      padding: 2px 6px;
+      border-radius: 4px;
+    }
+    .dropdown-close-btn:hover {
+      color: var(--text);
+      background: var(--pill-hover);
     }
 
     /* 节点网格 */
@@ -1296,64 +1435,7 @@
   </header>
 
   <main>
-    <!-- 左侧控制栏 (极致极简，只留用户最核心操作) -->
-    <aside class="sidebar">
-      <h2>✨ 专属 VIP 分组</h2>
-
-      <!-- 已有分组快速回显栏 -->
-      <div class="form-group" id="existingGroupsContainer" style="display: none;">
-        <label>📂 已有分组（点击载入）：</label>
-        <div class="existing-pills" id="existingGroupsList" style="display: flex; flex-wrap: wrap; gap: 6px;"></div>
-      </div>
-
-      <!-- 步骤 1：分组名称 -->
-      <div class="form-group">
-        <label for="groupNameInput">🏷️ 分组名称：</label>
-        <input type="text" id="groupNameInput" value="日本节点" placeholder="例如：日本VIP专线、美日AI池">
-      </div>
-
-      <!-- 步骤 2：已选节点统计卡片 -->
-      <div class="selected-summary">
-        <span>当前已勾选节点：</span>
-        <span class="selected-count" id="selectedCountDisplay">0</span>
-      </div>
-
-      <!-- 步骤 3：核心一键写入 -->
-      <button class="action-btn-main" id="saveBtn" onclick="saveAndApply()">
-        <span class="spinner"></span>
-        <span id="saveBtnText">🚀 一键生成并写入 Clash Verge</span>
-      </button>
-
-      <!-- 隐藏式高级选项 (默认全部为最佳实践，不打扰普通用户) -->
-      <details class="sidebar-details">
-        <summary>⚙️ 高级偏好设置（默认最佳）</summary>
-        <div class="sidebar-details-content">
-          <div class="form-group">
-            <label style="font-size: 11px;">调度策略：</label>
-            <div class="radio-group">
-              <div class="radio-btn active" id="typeSelect" onclick="setGroupType('select')">手动选择</div>
-              <div class="radio-btn" id="typeUrlTest" onclick="setGroupType('url-test')">自动测速</div>
-            </div>
-          </div>
-          <div class="switches" style="padding: 10px;">
-            <label class="switch-item" style="font-size: 12px;">
-              <input type="checkbox" id="mountSelector" checked>
-              <span>置顶挂载至『节点选择』</span>
-            </label>
-            <label class="switch-item" style="font-size: 12px;">
-              <input type="checkbox" id="cleanInfo" checked>
-              <span>自动过滤套餐/垃圾提示卡</span>
-            </label>
-            <label class="switch-item" style="font-size: 12px;">
-              <input type="checkbox" id="linkMedia" checked>
-              <span>将港台番剧与蒸汽接入总控</span>
-            </label>
-          </div>
-        </div>
-      </details>
-    </aside>
-
-    <!-- 右侧节点展示大厅 -->
+    <!-- 节点展示大厅 (全宽展示，留出最大视觉空间) -->
     <section class="content-area">
       <!-- 新手 3 步保姆级引导横幅 (初次访问展示，可点击掌握关闭) -->
       <div class="guide-banner" id="guideBanner">
@@ -1377,7 +1459,7 @@
             <div class="step-num">2</div>
             <div class="step-content">
               <div class="step-title">确认分组名称</div>
-              <div class="step-desc">左侧起个好记的名字（默认已自动填好）</div>
+              <div class="step-desc">右上方胶囊可展开改名（默认已设“日本节点”）</div>
             </div>
           </div>
           <div class="guide-step-arrow">➔</div>
@@ -1385,7 +1467,7 @@
             <div class="step-num">3</div>
             <div class="step-content">
               <div class="step-title">一键写入生效</div>
-              <div class="step-desc">点左侧【一键写入】，去 Verge 订阅右键刷新</div>
+              <div class="step-desc">点右上方【一键写入】，去 Verge 订阅右键刷新</div>
             </div>
           </div>
         </div>
@@ -1404,15 +1486,93 @@
           </div>
         </div>
 
-        <div class="filter-pills">
-          <span style="font-size: 12px; color: var(--text-muted);">地区筛选：</span>
-          <div class="pill active" onclick="setRegionFilter('ALL', this)">全部地区</div>
-          <div class="pill" onclick="setRegionFilter('JP', this)">🇯🇵 日本</div>
-          <div class="pill" onclick="setRegionFilter('SG', this)">🇸🇬 新加坡</div>
-          <div class="pill" onclick="setRegionFilter('US', this)">🇺🇸 美国</div>
-          <div class="pill" onclick="setRegionFilter('HK', this)">🇭🇰 香港</div>
-          <div class="pill" onclick="setRegionFilter('TW', this)">🇹🇼 台湾</div>
-          <div class="pill" onclick="setRegionFilter('KR', this)">🇰🇷 韩国</div>
+        <div class="toolbar-bottom-row">
+          <div class="filter-pills">
+            <span style="font-size: 12px; color: var(--text-muted);">地区筛选：</span>
+            <div class="pill active" onclick="setRegionFilter('ALL', this)">全部地区</div>
+            <div class="pill" onclick="setRegionFilter('JP', this)">🇯🇵 日本</div>
+            <div class="pill" onclick="setRegionFilter('SG', this)">🇸🇬 新加坡</div>
+            <div class="pill" onclick="setRegionFilter('US', this)">🇺🇸 美国</div>
+            <div class="pill" onclick="setRegionFilter('HK', this)">🇭🇰 香港</div>
+            <div class="pill" onclick="setRegionFilter('TW', this)">🇹🇼 台湾</div>
+            <div class="pill" onclick="setRegionFilter('KR', this)">🇰🇷 韩国</div>
+          </div>
+
+          <!-- 位置 2：折叠式 VIP 分组与一键写入控制台 (点开往下显示) -->
+          <div class="vip-group-dropdown-wrap" id="vipDropdownWrap">
+            <div class="vip-capsule-bar">
+              <div class="vip-group-trigger" onclick="toggleVipDropdown(event)" title="点击展开/收起 VIP 分组设置面板">
+                <span class="vip-trigger-icon">🏷️</span>
+                <span class="vip-trigger-name" id="triggerGroupNameDisplay">日本节点</span>
+                <span class="vip-trigger-badge" id="triggerCountDisplay">23</span>
+                <span class="vip-trigger-arrow" id="triggerArrow">▾</span>
+              </div>
+              <button class="vip-quick-save-btn" id="saveBtn" onclick="saveAndApply()" title="一键写入当前选中的节点至 Clash Verge">
+                <span class="spinner" id="quickSaveSpinner"></span>
+                <span id="saveBtnText">🚀 一键写入 Verge</span>
+              </button>
+            </div>
+
+            <!-- 向下展开的折叠面板 (点开的话就往下显示) -->
+            <div class="vip-dropdown-panel" id="vipDropdownPanel" style="display: none;" onclick="event.stopPropagation()">
+              <div class="dropdown-panel-header">
+                <span style="font-size: 13px; font-weight: 700; color: var(--text);">✨ 专属 VIP 分组配置</span>
+                <button class="dropdown-close-btn" onclick="closeVipDropdown()" title="收起面板">✕</button>
+              </div>
+
+              <!-- 已有分组快速回显栏 -->
+              <div class="form-group" id="existingGroupsContainer" style="display: none;">
+                <label style="font-size: 12px;">📂 已有 VIP 分组（点击直接载入）：</label>
+                <div class="existing-pills" id="existingGroupsList" style="display: flex; flex-wrap: wrap; gap: 6px;"></div>
+              </div>
+
+              <!-- 分组名称输入框 -->
+              <div class="form-group">
+                <label for="groupNameInput" style="font-size: 12px;">🏷️ 分组名称：</label>
+                <input type="text" id="groupNameInput" value="日本节点" placeholder="例如：日本VIP专线、美日AI池" oninput="updateTriggerName(this.value)">
+              </div>
+
+              <!-- 已选节点统计大卡片 -->
+              <div class="selected-summary" style="padding: 10px 14px;">
+                <span style="font-size: 13px;">已勾选节点数：</span>
+                <span class="selected-count" id="selectedCountDisplay">0</span>
+              </div>
+
+              <!-- 面板内部的一键写入按钮 -->
+              <button class="action-btn-main" onclick="saveAndApply()" style="padding: 11px;">
+                <span class="spinner"></span>
+                <span>🚀 一键生成并写入 Clash Verge</span>
+              </button>
+
+              <!-- 高级选项折叠 -->
+              <details class="sidebar-details">
+                <summary>⚙️ 高级偏好设置（默认最佳）</summary>
+                <div class="sidebar-details-content">
+                  <div class="form-group">
+                    <label style="font-size: 11px;">调度策略：</label>
+                    <div class="radio-group">
+                      <div class="radio-btn active" id="typeSelect" onclick="setGroupType('select')">手动选择</div>
+                      <div class="radio-btn" id="typeUrlTest" onclick="setGroupType('url-test')">自动测速</div>
+                    </div>
+                  </div>
+                  <div class="switches" style="padding: 8px;">
+                    <label class="switch-item" style="font-size: 11px;">
+                      <input type="checkbox" id="mountSelector" checked>
+                      <span>置顶挂载至『节点选择』</span>
+                    </label>
+                    <label class="switch-item" style="font-size: 11px;">
+                      <input type="checkbox" id="cleanInfo" checked>
+                      <span>过滤套餐/垃圾提示卡</span>
+                    </label>
+                    <label class="switch-item" style="font-size: 11px;">
+                      <input type="checkbox" id="linkMedia" checked>
+                      <span>港台番剧/蒸汽接入总控</span>
+                    </label>
+                  </div>
+                </div>
+              </details>
+            </div>
+          </div>
         </div>
       </div>
 
@@ -1666,6 +1826,10 @@
           openTutorialModal();
         }, 400);
       }
+
+      if (urlParams.get('test_vip_dropdown')) {
+        openVipDropdown();
+      }
     });
 
     async function loadProfiles() {
@@ -1750,6 +1914,7 @@
 
     function loadExistingGroup(cg, showNotification = true) {
       document.getElementById('groupNameInput').value = cg.name;
+      updateTriggerName(cg.name);
       setGroupType(cg.type || 'select');
       selectedSet.clear();
       if (Array.isArray(cg.proxies)) {
@@ -1764,6 +1929,7 @@
 
     function resetNewGroup(showNotification = true) {
       document.getElementById('groupNameInput').value = '新建VIP专线';
+      updateTriggerName('新建VIP专线');
       setGroupType('select');
       selectedSet.clear();
       updateCountDisplay();
@@ -1875,7 +2041,44 @@
     }
 
     function updateCountDisplay() {
-      document.getElementById('selectedCountDisplay').textContent = selectedSet.size;
+      const d1 = document.getElementById('selectedCountDisplay');
+      if (d1) d1.textContent = selectedSet.size;
+      const d2 = document.getElementById('triggerCountDisplay');
+      if (d2) d2.textContent = selectedSet.size;
+    }
+
+    function toggleVipDropdown(e) {
+      if (e) e.stopPropagation();
+      const panel = document.getElementById('vipDropdownPanel');
+      if (!panel) return;
+      if (panel.style.display === 'none' || !panel.style.display) {
+        openVipDropdown();
+      } else {
+        closeVipDropdown();
+      }
+    }
+
+    function openVipDropdown() {
+      const panel = document.getElementById('vipDropdownPanel');
+      const wrap = document.getElementById('vipDropdownWrap');
+      if (!panel || !wrap) return;
+      panel.style.display = 'flex';
+      wrap.classList.add('open');
+    }
+
+    function closeVipDropdown() {
+      const panel = document.getElementById('vipDropdownPanel');
+      const wrap = document.getElementById('vipDropdownWrap');
+      if (!panel || !wrap) return;
+      panel.style.display = 'none';
+      wrap.classList.remove('open');
+    }
+
+    function updateTriggerName(val) {
+      const display = document.getElementById('triggerGroupNameDisplay');
+      if (display) {
+        display.textContent = val.trim() || '未命名分组';
+      }
     }
 
     async function saveAndApply() {
@@ -1935,7 +2138,7 @@
         showToast('❌ 网络错误，保存失败', 'error');
       } finally {
         btn.classList.remove('loading');
-        btnText.textContent = '🚀 一键生成并写入 Clash Verge';
+        btnText.textContent = '🚀 一键写入 Verge';
       }
     }
 
@@ -2272,12 +2475,21 @@
       }
     }
 
-    // 监听 ESC 键关闭所有模态框
+    // 监听 ESC 键关闭所有模态框及下拉面板
     window.addEventListener('keydown', (e) => {
       if (e.key === 'Escape') {
         closeSuccessModal();
         closeRulesModal();
         closeTutorialModal();
+        closeVipDropdown();
+      }
+    });
+
+    // 点击外部区域自动收起 VIP 折叠面板
+    window.addEventListener('click', (e) => {
+      const wrap = document.getElementById('vipDropdownWrap');
+      if (wrap && !wrap.contains(e.target)) {
+        closeVipDropdown();
       }
     });
 
