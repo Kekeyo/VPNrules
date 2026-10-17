@@ -14,7 +14,12 @@ from http.server import HTTPServer, BaseHTTPRequestHandler
 from pathlib import Path
 from datetime import datetime
 
-# Windows 控制台标准输出 UTF-8 兼容性加固
+# Windows 控制台标准输出与后台守护进程兼容性加固
+if sys.stdout is None:
+    sys.stdout = open(BASE_DIR / "server.log", "a", encoding="utf-8")
+if sys.stderr is None:
+    sys.stderr = open(BASE_DIR / "server.log", "a", encoding="utf-8")
+
 if hasattr(sys.stdout, 'reconfigure'):
     try:
         sys.stdout.reconfigure(encoding='utf-8', errors='replace')
@@ -368,11 +373,33 @@ class VergeAPIHandler(BaseHTTPRequestHandler):
         content = "\n".join(yaml_lines)
         rules_file.write_text(content, encoding="utf-8")
 
+        # 同步备份至工作区目录
+        try:
+            USER_WORKSPACE_DIR.mkdir(parents=True, exist_ok=True)
+            (USER_WORKSPACE_DIR / f"{rules_uid}.yaml").write_text(content, encoding="utf-8")
+        except Exception:
+            pass
+
+        # 同步检查更新当前运行时 clash-verge.yaml 中的国内 AI 直连规则
+        runtime_updated = False
+        try:
+            runtime_yaml = VERGE_APP_DIR / "clash-verge.yaml"
+            if runtime_yaml.exists():
+                rt_text = runtime_yaml.read_text(encoding="utf-8", errors="ignore")
+                # 修复历史残留的 doubao 节点选择
+                if "- DOMAIN-SUFFIX,doubao.com,节点选择" in rt_text:
+                    rt_text = rt_text.replace("- DOMAIN-SUFFIX,doubao.com,节点选择", "- DOMAIN-SUFFIX,doubao.com,DIRECT")
+                    runtime_yaml.write_text(rt_text, encoding="utf-8")
+                    runtime_updated = True
+        except Exception:
+            pass
+
         return {
             "success": True,
-            "message": f"成功保存 {len(rules)} 条分流规则！",
+            "message": f"成功保存 {len(rules)} 条分流规则！" + (" (运行时已同步打通)" if runtime_updated else ""),
             "rules_file": str(rules_file),
-            "total_rules": len(rules)
+            "total_rules": len(rules),
+            "hint": "若客户端未即时切换，可在 Clash Verge 订阅卡片右键选择「重新加载」生效！"
         }
 
     def handle_save_group(self, data):
