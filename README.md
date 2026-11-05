@@ -49,23 +49,23 @@ python server.py
 
 ## 🖥️ 界面预览
 
-> 截图中的订阅、节点和 IP 都是演示数据。
+> 截图中的订阅和节点都是演示数据，IP 已打码。
 
 ### 整体界面：测试后显示真实走线
 
-![浅色模式全景](docs/images/01_overview_light.png)
+![浅色模式全景](docs/images/overview_light.png)
 
 ### 住宅 IP 与链路测试
 
-![住宅链路测试结果](docs/images/02_residential_chain.png)
+![住宅链路测试结果](docs/images/residential_chain.png)
 
 ### 分流规则与黄金模板
 
-![分流规则](docs/images/03_rules.png)
+![分流规则](docs/images/rules.png)
 
 ### 深色模式
 
-![深色模式全景](docs/images/04_overview_dark.png)
+![深色模式全景](docs/images/overview_dark.png)
 
 ---
 
