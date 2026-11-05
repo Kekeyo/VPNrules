@@ -20,3 +20,6 @@ desktop.ini
 .vscode/
 *.swp
 *.swo
+
+# 运行时产生的本地数据
+workspace/

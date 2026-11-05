@@ -1,51 +1,39 @@
 @echo off
-chcp 65001 >nul
-title Clash Verge VIP 节点编排控制台
 cd /d "%~dp0"
-
-echo =======================================================
-echo    Clash Verge VIP 节点编排可视化管理控制台
-echo =======================================================
-echo.
-
-REM 1. 检查 Python 运行环境
 where python >nul 2>&1
 if errorlevel 1 (
-    echo [错误] 未在系统 PATH 中检测到 Python 环境！
+    echo [ERROR] Python not found in PATH
     pause
     exit /b 1
 )
-
-REM 2. 真实 TCP 探针检测 8899 端口是否已在运行 (彻底摒弃脆弱的 netstat 管道)
-python -c "import socket,sys;s=socket.socket();s.settimeout(0.3);sys.exit(0 if s.connect_ex(('127.0.0.1',8899))==0 else 1)" >nul 2>&1
-if not errorlevel 1 (
-    echo [状态] Clash Verge VIP 控制台已在运行 (端口 8899)
-    echo [操作] 正在为您打开浏览器控制台...
-    start "" "http://127.0.0.1:8899"
-    timeout /t 1 >nul 2>&1
-    exit /b 0
-)
-
-REM 3. 服务未运行，启动后台服务进程
-echo [1/2] 正在启动后台服务进程 (python server.py)...
-start "Clash-Verge-VIP-8899" /min python server.py
-
-REM 4. 轮询等待 8899 端口就绪 (真实 TCP 握手确认)
-echo [2/2] 正在等待端口 8899 就绪...
-for /l %%i in (1, 1, 10) do (
-    timeout /t 1 /nobreak >nul 2>&1
-    python -c "import socket,sys;s=socket.socket();s.settimeout(0.3);sys.exit(0 if s.connect_ex(('127.0.0.1',8899))==0 else 1)" >nul 2>&1
-    if not errorlevel 1 (
-        echo [成功] 服务已就绪！正在为您唤起浏览器控制台...
-        start "" "http://127.0.0.1:8899"
-        timeout /t 1 >nul 2>&1
-        exit /b 0
+python -c "import yaml" >nul 2>&1
+if errorlevel 1 (
+    echo Installing PyYAML...
+    python -m pip install -r requirements.txt
+    if errorlevel 1 (
+        echo [ERROR] Could not install PyYAML. Run: pip install PyYAML
+        pause
+        exit /b 1
     )
 )
-
-echo.
-echo =======================================================
-echo [警告] 端口 8899 启动超时，请检查控制台或 Python 依赖！
-echo =======================================================
-echo.
-pause
+powershell -NoProfile -Command "if (Test-NetConnection -ComputerName 127.0.0.1 -Port 8899 -InformationLevel Quiet -WarningAction SilentlyContinue) { exit 0 } else { exit 1 }"
+if not errorlevel 1 goto open
+powershell -NoProfile -Command "Start-Process -FilePath (Get-Command python).Source -ArgumentList 'server.py' -WorkingDirectory '%~dp0' -WindowStyle Hidden"
+set "OK="
+for /l %%i in (1,1,20) do (
+    if not defined OK (
+        powershell -NoProfile -Command "if (Test-NetConnection -ComputerName 127.0.0.1 -Port 8899 -InformationLevel Quiet -WarningAction SilentlyContinue) { exit 0 } else { exit 1 }"
+        if not errorlevel 1 set "OK=1"
+        if not defined OK ping 127.0.0.1 -n 2 >nul
+    )
+)
+if not defined OK (
+    echo [ERROR] Port 8899 did not start within 20s. See server.log
+    pause
+    exit /b 1
+)
+:open
+start "" "http://127.0.0.1:8899"
+echo Running in background: http://127.0.0.1:8899
+timeout /t 2 >nul
+exit /b 0
