@@ -30,7 +30,7 @@
 
 需要已安装 [Python 3](https://www.python.org/downloads/)。建议同时安装 [Node.js](https://nodejs.org/)：写入后直接生效要靠它运行脚本，没有的话配置照样保存，只是要回 Verge 刷新。
 
-1. 从 [Releases 最新发布页](https://github.com/Kekeyo/VPNrules/releases/latest) 下载 `VPNrules-v2.0.2.zip` 并解压；
+1. 从 [Releases 最新发布页](https://github.com/Kekeyo/VPNrules/releases/latest) 下载 `VPNrules-v2.0.3.zip` 并解压；
 2. 双击 `启动控制台.bat`，首次运行会自动安装 PyYAML 和分流脚本；
 3. **完成！** 浏览器会打开 `http://127.0.0.1:8899`，填住宅 IP，点 **写入**，再点 **测试链路**。
 

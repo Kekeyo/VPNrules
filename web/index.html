@@ -2424,7 +2424,7 @@
   <style id="compact-nodes">
     .content-area { gap: 12px; }
     .group-tabs-container { margin-bottom: 0; }
-    .nodes-grid { grid-template-columns: repeat(auto-fill, minmax(190px, 1fr)) !important; gap: 8px !important; }
+    .nodes-grid { grid-template-columns: repeat(2, minmax(0, 1fr)) !important; gap: 8px !important; }
     .node-card { padding: 7px 12px !important; min-height: 0 !important; border-radius: 12px !important; gap: 8px !important; box-shadow: none !important; transform: none !important; border: 1px solid var(--border) !important; background: var(--bg-card) !important; }
     .node-card:hover { border-color: var(--border-card-hover) !important; }
     .node-card.selected { border-color: #d99a00 !important; background: #fff7e0 !important; }
@@ -4588,7 +4588,7 @@
     (function () {
       const grid = document.querySelector('.work-grid'), bar = document.getElementById('workSplit');
       const setW = w => grid.style.setProperty('--right-w', w + 'px');
-      const clamp = w => Math.max(340, Math.min(w, grid.getBoundingClientRect().width - 480));
+      const clamp = w => Math.max(340, Math.min(w, grid.getBoundingClientRect().width - 580));
       try { const s = parseInt(localStorage.getItem('vg-right-w')); if (s) setW(clamp(s)); } catch (e) {}
       bar.addEventListener('pointerdown', e => {
         e.preventDefault();
