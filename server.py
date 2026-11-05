@@ -1055,6 +1055,48 @@ def _with_apply(result, uid=None):
         result.update(apply_current(uid))
     return result
 
+TEMPLATE_RE = re.compile(r"(var masterGoldenRules = \[)(.*?)(\n  \];)", re.S)
+
+def _template_file():
+    return VERGE_PROFILES_DIR / "Script.js"
+
+def get_template_rules():
+    """全局脚本里的通用模板规则"""
+    f = _template_file()
+    if not f.exists():
+        return []
+    m = TEMPLATE_RE.search(f.read_text(encoding="utf-8", errors="ignore"))
+    if not m:
+        return []
+    return re.findall(r"""(?m)^\s*['"]([^'"\n]+)['"],?\s*(?://.*)?$""", m.group(2))
+
+def update_template(rules):
+    """用这份规则覆盖通用模板。各订阅在 Verge 刷新后生效"""
+    if not isinstance(rules, list) or not rules:
+        return {"success": False, "error": "当前没有规则，模板没动"}
+    clean, seen = [], set()
+    for r in rules:
+        rule_type = str((r or {}).get("type") or "DOMAIN-SUFFIX").strip()
+        payload = str((r or {}).get("payload") or "").strip()
+        target = str((r or {}).get("target") or "节点选择").strip()
+        if not payload or not re.fullmatch(r"[A-Z0-9-]+", rule_type) or re.search(r"[,'\"\r\n\\]", payload + target):
+            return {"success": False, "error": f"规则不合法：{payload or rule_type}"}
+        if (rule_type, payload) not in seen:      # 同一个域名只留排前面的
+            seen.add((rule_type, payload))
+            clean.append(f"{rule_type},{payload},{target}")
+    f = _template_file()
+    if not f.exists():
+        return {"success": False, "error": "没找到全局脚本"}
+    src = f.read_text(encoding="utf-8")
+    if not TEMPLATE_RE.search(src):
+        return {"success": False, "error": "全局脚本里没找到模板"}
+    BACKUP_DIR.mkdir(parents=True, exist_ok=True)
+    shutil.copy2(f, BACKUP_DIR / f"Script_{datetime.now().strftime('%Y%m%d_%H%M%S')}.js")
+    body = chr(10) + ("," + chr(10)).join("    " + json.dumps(x, ensure_ascii=False) for x in clean)
+    new = TEMPLATE_RE.sub(lambda m: m.group(1) + body + m.group(3), src, count=1)
+    f.write_text(new, encoding="utf-8")
+    return {"success": True, "count": len(clean)}
+
 def residential_target(uid):
     info = parse_yaml_profiles()
     t = next((i for i in info["items"] if i["uid"] == uid), None)
@@ -1235,6 +1277,10 @@ class VergeAPIHandler(BaseHTTPRequestHandler):
 
         if path == "/api/group-order":
             self.send_json({"order": get_group_order(params.get("uid", [""])[0])})
+            return
+
+        if path == "/api/template":
+            self.send_json({"rules": get_template_rules()})
             return
 
         if path == "/api/live-chain":

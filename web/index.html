@@ -2813,9 +2813,10 @@
     .rule-item-card .rule-target-badge { min-width: 90px; box-sizing: border-box; text-align: center; }
 
     /* 标题框和规则区的小按钮统一：同高、同字号 */
-    #rulesModal #updateTemplateBtn { margin-left: auto !important; margin-right: 8px !important; flex: none; }
+    #rulesModal #copyTemplateBtn { margin-left: auto !important; margin-right: 8px !important; flex: none; }
+    #rulesModal #updateTemplateBtn { margin-left: 0 !important; margin-right: 8px !important; flex: none; }
     #rulesModal #toggleAddRuleBtn { margin-left: 0 !important; flex: none; }
-    .work-main .toolbar .quick-actions .btn-sm, #rulesModal #toggleAddRuleBtn, #rulesModal #updateTemplateBtn, #rulesModal .rules-modal-header::after {
+    .work-main .toolbar .quick-actions .btn-sm, #rulesModal #toggleAddRuleBtn, #rulesModal #updateTemplateBtn, #rulesModal #copyTemplateBtn, #rulesModal .rules-modal-header::after {
       box-sizing: border-box; height: 34px; padding: 0 14px !important; display: inline-flex; align-items: center; justify-content: center;
       font-size: 14px !important; font-weight: 500 !important; line-height: 1; white-space: nowrap;
       color: var(--g-tx) !important; background: var(--g-in) !important; border: 1px solid var(--g-in-bd) !important; border-radius: 10px !important; box-shadow: none !important;
@@ -3052,6 +3053,7 @@
         <div class="rules-filter-pills" id="rulesFilterPillsContainer">
           <!-- 动态按当前订阅真实策略组渲染 -->
         </div>
+        <button class="btn-toggle-add-rule" id="copyTemplateBtn" onclick="copyTemplate()" title="复制黄金模板，可粘贴到其它配置">复制模板</button>
         <button class="btn-toggle-add-rule" id="updateTemplateBtn" onclick="updateTemplate()" title="把当前这份规则存成所有订阅共用的模板">更新模板</button>
         <button class="btn-toggle-add-rule" id="toggleAddRuleBtn" onclick="toggleAddRuleBar()" title="展开手动添加自定义规则输入框">➕ 手动加一条</button>
       </div>
@@ -4808,6 +4810,30 @@
   </script>
   <script>
     // 把当前这份规则（包括还没点“保存规则”的改动）存成所有订阅共用的模板
+    async function copyTemplate() {
+      const btn = document.getElementById('copyTemplateBtn');
+      try {
+        const rules = (await (await fetch('/api/template')).json()).rules || [];
+        if (!rules.length) return showToast('❌ 模板是空的', 'error');
+        const text = rules.map(r => '- ' + r).join('\n');
+        try {
+          await navigator.clipboard.writeText(text);
+        } catch (e) {
+          const t = document.createElement('textarea');
+          t.value = text;
+          document.body.appendChild(t);
+          t.select();
+          const ok = document.execCommand('copy');
+          t.remove();
+          if (!ok) throw e;
+        }
+        btn.textContent = '已复制';
+        setTimeout(() => { btn.textContent = '复制模板'; }, 1200);
+      } catch (e) {
+        showToast('❌ 复制失败', 'error');
+      }
+    }
+
     async function updateTemplate() {
       const btn = document.getElementById('updateTemplateBtn');
       const n = currentRules.length;
