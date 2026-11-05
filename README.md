@@ -8,7 +8,7 @@
   <img src="https://img.shields.io/badge/License-MIT-blue?style=flat-square" alt="License" />
 </p>
 
-填一次住宅 IP，就得到“本机 → 机场节点 → 住宅 IP → 目标网站”的完整链路：不用手写 YAML，不用回 Verge 刷新，还能用真实请求测出这条线到底通不通。
+内置 41 条**黄金模板**分流规则：Google 系走 Google 专线，Claude、OpenAI 走 Claude 专线，国内 AI 和常用网站直连，换订阅也不用重配。填一次住宅 IP，就得到“本机 → 机场节点 → 住宅 IP → 目标网站”的完整链路，配置直接生效，还能用真实请求测出这条线到底通不通。
 
 ---
 
@@ -59,13 +59,73 @@ python server.py
 
 ![住宅链路测试结果](docs/images/02_residential_chain.png)
 
-### 分流规则与通用模板
+### 分流规则与黄金模板
 
 ![分流规则](docs/images/03_rules.png)
 
 ### 深色模式
 
 ![深色模式全景](docs/images/04_overview_dark.png)
+
+---
+
+## 🎯 网络命中规则：黄金模板
+
+**黄金模板是这个项目的分流核心**：41 条规则排在所有规则最前面，优先级最高，所有订阅通用。换机场、加订阅都不用重配，AI 服务的走向始终不变。
+
+### 黄金模板分流
+
+| 去向 | 匹配内容 | 数量 |
+|:---|:---|---:|
+| **Google 专线** | Gemini、AI Studio、`google.com`、`googleapis.com`、YouTube 等 | 17 |
+| **Claude 专线** | `anthropic.com`、`claude.ai`、`openai.com`、`chatgpt.com`，<br>以及域名中含 `anthropic`、`claude`、`openai` 的 | 10 |
+| **DIRECT** | DeepSeek、豆包、Kimi、智谱、MiniMax，<br>百度、QQ、B 站、淘宝、京东、网易 | 14 |
+
+### 匹配顺序
+
+内核**从上往下逐条匹配，命中第一条就停**，后面的规则不再看。
+
+| 顺序 | 层级 | 来源 | 说明 |
+|:---:|:---|:---|:---|
+| 1 | **黄金模板** | `Script.js` | 41 条，所有订阅相同，优先级最高 |
+| 2 | **手动规则** | 页面“手动加一条” | 只对当前订阅生效 |
+| 3 | **订阅自带规则** | 机场 | 指向已删除分组的，改走“节点选择” |
+| 4 | **兜底规则** | 订阅里的 `GEOIP` / `MATCH` | 通常是中国 IP 直连，其余走“节点选择” |
+
+```mermaid
+%%{init: {'flowchart': {'wrappingWidth': 550, 'nodeSpacing': 30}}}%%
+flowchart TD
+    A["一条新连接"] --> B{"命中黄金模板？"}
+    B -->|"Google 系"| C["Google 专线"]
+    B -->|"Claude / OpenAI 系"| D["Claude 专线"]
+    B -->|"国内 AI 和常用站"| E["DIRECT 直连"]
+    B -->|"没命中"| F{"命中手动规则？"}
+    F -->|"是"| G["规则指定的分组"]
+    F -->|"没命中"| H{"命中订阅自带规则？"}
+    H -->|"是"| I["节点选择 / DIRECT / REJECT"]
+    H -->|"没命中"| J["兜底：MATCH 节点选择"]
+```
+
+### 命中示例
+
+| 访问 | 命中规则 | 去向 |
+|:---|:---|:---|
+| `gemini.google.com` | `DOMAIN,gemini.google.com` | Google 专线 |
+| `www.youtube.com` | `DOMAIN-SUFFIX,youtube.com` | Google 专线 |
+| `api.anthropic.com` | `DOMAIN-SUFFIX,anthropic.com` | Claude 专线 |
+| `chatgpt.com` | `DOMAIN-SUFFIX,chatgpt.com` | Claude 专线 |
+| `my-claude-tools.example` | `DOMAIN-KEYWORD,claude` | Claude 专线 |
+| `www.deepseek.com` | `DOMAIN-SUFFIX,deepseek.com` | DIRECT |
+| `github.com` | 模板未命中，看订阅规则 | 取决于订阅 |
+
+### 分组里有什么
+
+| 分组 | 成员 | 用途 |
+|:---|:---|:---|
+| **节点选择** | 全部真实节点 | 总出口，订阅规则的默认去向 |
+| **Google 专线** | 默认日本、台湾节点，<br>外加节点选择、DIRECT | Google 全家 |
+| **Claude 专线** | 默认韩国、美国节点，<br>外加节点选择、DIRECT | 海外 AI |
+| **搭载** | 除住宅外的全部机场节点 | 住宅节点的前一跳，不含住宅所以不会成环 |
 
 ---
 
@@ -79,7 +139,7 @@ python server.py
 | **一处写错整个代理挂掉** | 例如分组丢了，内核报<br>`dialer-proxy [搭载] not found` | 先用内核预检，不通过就红字提示，<br>运行中的配置不动 |
 | **界面显示不等于实际走线** | 延迟通不代表出口是住宅，<br>页面上选的也未必是内核在用的 | 真实请求走运行中的内核，<br>节点名和出口 IP 都来自实测 |
 | **换订阅就要重来** | 机场自带几十个分组，规则指向分散，<br>假节点还混在里面 | 只留 4 个核心分组，<br>新订阅自动套用同一套结构 |
-| **规则模板改起来麻烦** | 通用规则写在脚本里，<br>只能打开文件手改 | 在页面调好后点 **更新模板**，<br>所有订阅通用 |
+| **规则模板改起来麻烦** | 黄金模板写在脚本里，<br>只能打开文件手改 | 在页面调好后点 **更新模板**，<br>所有订阅通用 |
 
 ---
 
@@ -154,64 +214,6 @@ flowchart TD
 
 ---
 
-## 🎯 网络命中规则
-
-内核**从上往下逐条匹配，命中第一条就停**，后面的规则不再看。
-
-### 匹配顺序
-
-| 顺序 | 层级 | 来源 | 说明 |
-|:---:|:---|:---|:---|
-| 1 | **通用模板** | `Script.js` | 41 条，所有订阅相同，优先级最高 |
-| 2 | **手动规则** | 页面“手动加一条” | 只对当前订阅生效 |
-| 3 | **订阅自带规则** | 机场 | 指向已删除分组的，改走“节点选择” |
-| 4 | **兜底规则** | 订阅里的 `GEOIP` / `MATCH` | 通常是中国 IP 直连，其余走“节点选择” |
-
-```mermaid
-%%{init: {'flowchart': {'wrappingWidth': 550, 'nodeSpacing': 30}}}%%
-flowchart TD
-    A["一条新连接"] --> B{"命中通用模板？"}
-    B -->|"Google 系"| C["Google 专线"]
-    B -->|"Claude / OpenAI 系"| D["Claude 专线"]
-    B -->|"国内 AI 和常用站"| E["DIRECT 直连"]
-    B -->|"没命中"| F{"命中手动规则？"}
-    F -->|"是"| G["规则指定的分组"]
-    F -->|"没命中"| H{"命中订阅自带规则？"}
-    H -->|"是"| I["节点选择 / DIRECT / REJECT"]
-    H -->|"没命中"| J["兜底：MATCH 节点选择"]
-```
-
-### 通用模板的分流
-
-| 去向 | 匹配内容 | 数量 |
-|:---|:---|---:|
-| **Google 专线** | Gemini、AI Studio、`google.com`、`googleapis.com`、YouTube 等 | 17 |
-| **Claude 专线** | `anthropic.com`、`claude.ai`、`openai.com`、`chatgpt.com`，<br>以及域名中含 `anthropic`、`claude`、`openai` 的 | 10 |
-| **DIRECT** | DeepSeek、豆包、Kimi、智谱、MiniMax，<br>百度、QQ、B 站、淘宝、京东、网易 | 14 |
-
-### 命中示例
-
-| 访问 | 命中规则 | 去向 |
-|:---|:---|:---|
-| `gemini.google.com` | `DOMAIN,gemini.google.com` | Google 专线 |
-| `www.youtube.com` | `DOMAIN-SUFFIX,youtube.com` | Google 专线 |
-| `api.anthropic.com` | `DOMAIN-SUFFIX,anthropic.com` | Claude 专线 |
-| `chatgpt.com` | `DOMAIN-SUFFIX,chatgpt.com` | Claude 专线 |
-| `my-claude-tools.example` | `DOMAIN-KEYWORD,claude` | Claude 专线 |
-| `www.deepseek.com` | `DOMAIN-SUFFIX,deepseek.com` | DIRECT |
-| `github.com` | 模板未命中，看订阅规则 | 取决于订阅 |
-
-### 分组里有什么
-
-| 分组 | 成员 | 用途 |
-|:---|:---|:---|
-| **节点选择** | 全部真实节点 | 总出口，订阅规则的默认去向 |
-| **Google 专线** | 默认日本、台湾节点，<br>外加节点选择、DIRECT | Google 全家 |
-| **Claude 专线** | 默认韩国、美国节点，<br>外加节点选择、DIRECT | 海外 AI |
-| **搭载** | 除住宅外的全部机场节点 | 住宅节点的前一跳，不含住宅所以不会成环 |
-
----
-
 ## 🛠️ 核心痛点与避坑实战
 
 **手动规则为什么没生效？**
@@ -259,7 +261,7 @@ flowchart TD
 VPNrules/
 ├── 启动控制台.bat       # 启动入口：装依赖、后台拉起服务、打开浏览器
 ├── server.py            # 本地服务：读写配置、内核预检、加载、链路测试
-├── Script.js            # Verge 全局脚本：分组结构和通用模板规则
+├── Script.js            # Verge 全局脚本：分组结构和黄金模板规则
 ├── requirements.txt     # PyYAML
 ├── web/
 │   ├── index.html       # 控制台页面
